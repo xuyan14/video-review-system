@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>视频审核管理系统</title>
+    <title>视频审核管理系统 - 演示版</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -310,6 +310,11 @@
             color: white;
         }
         
+        .stage-item.rejected {
+            background-color: #ef4444;
+            color: white;
+        }
+        
         .stage-arrow {
             color: #9ca3af;
         }
@@ -451,37 +456,37 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="stats-card">
-                        <h3>156</h3>
+                        <h3 id="totalVideos">156</h3>
                         <p>总视频数</p>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="stats-card">
-                        <h3>23</h3>
+                        <h3 id="annotationPending">23</h3>
                         <p>待标注审核</p>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="stats-card">
-                        <h3>45</h3>
+                        <h3 id="artworkPending">45</h3>
                         <p>待加艺术字</p>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="stats-card">
-                        <h3>67</h3>
+                        <h3 id="uedPending">67</h3>
                         <p>待UED审核</p>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="stats-card">
-                        <h3>21</h3>
+                        <h3 id="completedVideos">21</h3>
                         <p>已完成</p>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="stats-card">
-                        <h3>0</h3>
+                        <h3 id="pendingVideos">0</h3>
                         <p>审核不通过</p>
                     </div>
                 </div>
@@ -494,7 +499,7 @@
                 <div class="filter-row">
                     <div class="filter-item narrow">
                         <label class="form-label">完成状态</label>
-                        <select class="form-select" id="completionStatus">
+                        <select class="form-select" id="statusFilter">
                             <option value="">全部</option>
                             <option value="completed">已完成</option>
                             <option value="in_progress">进行中</option>
@@ -503,7 +508,7 @@
                     </div>
                     <div class="filter-item">
                         <label class="form-label">当前阶段</label>
-                        <select class="form-select" id="currentStage">
+                        <select class="form-select" id="stageFilter">
                             <option value="">全部</option>
                             <option value="annotation_review">待标注审核</option>
                             <option value="artwork">待加艺术字</option>
@@ -513,7 +518,7 @@
                     </div>
                     <div class="filter-item">
                         <label class="form-label">审核员</label>
-                        <select class="form-select" id="reviewer">
+                        <select class="form-select" id="reviewerFilter">
                             <option value="">全部</option>
                             <option value="王嘉欣">王嘉欣</option>
                             <option value="王量">王量</option>
@@ -522,7 +527,7 @@
                     </div>
                     <div class="filter-item">
                         <label class="form-label">品牌名称</label>
-                        <select class="form-select" id="brand">
+                        <select class="form-select" id="brandFilter">
                             <option value="">全部</option>
                             <option value="富铤">富铤</option>
                             <option value="VIP自营">VIP自营</option>
@@ -531,15 +536,15 @@
                     </div>
                     <div class="filter-item">
                         <label class="form-label">视频提供日期</label>
-                        <input type="date" class="form-control" id="videoDate">
+                        <input type="date" class="form-control" id="provideDateFilter">
                     </div>
                     <div class="filter-item narrow">
                         <label class="form-label">商品ID</label>
-                        <input type="text" class="form-control" id="productId" placeholder="输入商品ID">
+                        <input type="text" class="form-control" id="productIdFilter" placeholder="输入商品ID">
                     </div>
                     <div class="filter-item">
                         <label class="form-label">标注验收状态</label>
-                        <select class="form-select" id="annotationStatus">
+                        <select class="form-select" id="annotationStatusFilter">
                             <option value="">全部</option>
                             <option value="未审核">未审核</option>
                             <option value="可用">可用</option>
@@ -548,7 +553,7 @@
                     </div>
                     <div class="filter-item">
                         <label class="form-label">UED验收状态</label>
-                        <select class="form-select" id="uedStatus">
+                        <select class="form-select" id="uedStatusFilter">
                             <option value="">全部</option>
                             <option value="未审核">未审核</option>
                             <option value="可用">可用</option>
@@ -612,222 +617,7 @@
                             </tr>
                         </thead>
                         <tbody id="videosTableBody">
-                            <!-- 模拟数据 -->
-                            <tr>
-                                <td class="checkbox-column">
-                                    <input type="checkbox" class="video-checkbox" value="VID-001">
-                                </td>
-                                <td>
-                                    <div class="material-info" title="VIP自A富男式衬0171 - 高品质男士衬衫，商务休闲两相宜，精选面料，舒适透气">
-                                        VIP自A富男式衬0171
-                                    </div>
-                                </td>
-                                <td>
-                                    <select class="form-select form-select-sm" onchange="updateReviewer('VID-001', this.value)">
-                                        <option value="">未分配</option>
-                                        <option value="王嘉欣" selected>王嘉欣</option>
-                                        <option value="王量">王量</option>
-                                        <option value="豆玉欣">豆玉欣</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-select form-select-sm" onchange="updateAnnotationStatus('VID-001', this.value)">
-                                        <option value="未审核" selected>未审核</option>
-                                        <option value="可用">可用</option>
-                                        <option value="不可用">不可用</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-select form-select-sm" onchange="updateArtworkPerson('VID-001', this.value)">
-                                        <option value="">未分配</option>
-                                        <option value="王嘉欣">王嘉欣</option>
-                                        <option value="王量" selected>王量</option>
-                                        <option value="豆玉欣">豆玉欣</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-select form-select-sm" onchange="updateUedStatus('VID-001', this.value)">
-                                        <option value="未审核" selected>未审核</option>
-                                        <option value="可用">可用</option>
-                                        <option value="不可用">不可用</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <div class="stage-indicator">
-                                        <span class="stage-item active">待标注审核</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="category-info">男装/男上装/男士衬衫</div>
-                                </td>
-                                <td>
-                                    <div class="brand-info">富铤</div>
-                                </td>
-                                <td>2024-01-15</td>
-                                <td>2024-01-20</td>
-                                <td>
-                                    <a href="#" class="product-link" onclick="showProductInfo('12345')">12345</a>
-                                </td>
-                                <td>
-                                    <i class="fas fa-eye eye-icon" onclick="openReviewModal('VID-001', 'original')" title="播放原始视频"></i>
-                                </td>
-                                <td>--</td>
-                                <td>--</td>
-                                <td>无截图</td>
-                                <td>--</td>
-                                <td>无截图</td>
-                                <td>
-                                    <button class="btn btn-outline-info btn-sm" onclick="showProductionDetails('VID-001')">详情</button>
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                <td class="checkbox-column">
-                                    <input type="checkbox" class="video-checkbox" value="VID-002">
-                                </td>
-                                <td>
-                                    <div class="material-info" title="VIP自A女装连衣裙 - 优雅时尚女装，精致剪裁，展现女性魅力">
-                                        VIP自A女装连衣裙
-                                    </div>
-                                </td>
-                                <td>
-                                    <select class="form-select form-select-sm" onchange="updateReviewer('VID-002', this.value)">
-                                        <option value="">未分配</option>
-                                        <option value="王嘉欣">王嘉欣</option>
-                                        <option value="王量" selected>王量</option>
-                                        <option value="豆玉欣">豆玉欣</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-select form-select-sm" onchange="updateAnnotationStatus('VID-002', this.value)">
-                                        <option value="未审核">未审核</option>
-                                        <option value="可用" selected>可用</option>
-                                        <option value="不可用">不可用</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-select form-select-sm" onchange="updateArtworkPerson('VID-002', this.value)">
-                                        <option value="">未分配</option>
-                                        <option value="王嘉欣">王嘉欣</option>
-                                        <option value="王量">王量</option>
-                                        <option value="豆玉欣" selected>豆玉欣</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-select form-select-sm" onchange="updateUedStatus('VID-002', this.value)">
-                                        <option value="未审核" selected>未审核</option>
-                                        <option value="可用">可用</option>
-                                        <option value="不可用">不可用</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <div class="stage-indicator">
-                                        <span class="stage-item completed">待加艺术字</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="category-info">女装/连衣裙/长袖连衣裙</div>
-                                </td>
-                                <td>
-                                    <div class="brand-info">VIP自营</div>
-                                </td>
-                                <td>2024-01-16</td>
-                                <td>2024-01-21</td>
-                                <td>
-                                    <a href="#" class="product-link" onclick="showProductInfo('67890')">67890</a>
-                                </td>
-                                <td>
-                                    <i class="fas fa-eye eye-icon" onclick="openReviewModal('VID-002', 'original')" title="播放原始视频"></i>
-                                </td>
-                                <td>
-                                    <button class="upload-btn" onclick="openUploadModal('VID-002')">上传视频</button>
-                                </td>
-                                <td>视频质量良好，符合要求</td>
-                                <td>
-                                    <img src="https://via.placeholder.com/60x40/10b981/ffffff?text=截图1" class="screenshot-thumbnail" onclick="showScreenshot('screenshot1')">
-                                </td>
-                                <td>--</td>
-                                <td>无截图</td>
-                                <td>
-                                    <button class="btn btn-outline-info btn-sm" onclick="showProductionDetails('VID-002')">详情</button>
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                <td class="checkbox-column">
-                                    <input type="checkbox" class="video-checkbox" value="VID-003">
-                                </td>
-                                <td>
-                                    <div class="material-info" title="VIP自A运动鞋 - 舒适运动鞋，透气材质，适合日常运动">
-                                        VIP自A运动鞋
-                                    </div>
-                                </td>
-                                <td>
-                                    <select class="form-select form-select-sm" onchange="updateReviewer('VID-003', this.value)">
-                                        <option value="">未分配</option>
-                                        <option value="王嘉欣">王嘉欣</option>
-                                        <option value="王量">王量</option>
-                                        <option value="豆玉欣" selected>豆玉欣</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-select form-select-sm" onchange="updateAnnotationStatus('VID-003', this.value)">
-                                        <option value="未审核">未审核</option>
-                                        <option value="可用" selected>可用</option>
-                                        <option value="不可用">不可用</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-select form-select-sm" onchange="updateArtworkPerson('VID-003', this.value)">
-                                        <option value="">未分配</option>
-                                        <option value="王嘉欣" selected>王嘉欣</option>
-                                        <option value="王量">王量</option>
-                                        <option value="豆玉欣">豆玉欣</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-select form-select-sm" onchange="updateUedStatus('VID-003', this.value)">
-                                        <option value="未审核">未审核</option>
-                                        <option value="可用" selected>可用</option>
-                                        <option value="不可用">不可用</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <div class="stage-indicator">
-                                        <span class="stage-item completed">UED审核通过</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="category-info">鞋靴/运动鞋/跑步鞋</div>
-                                </td>
-                                <td>
-                                    <div class="brand-info">富铤</div>
-                                </td>
-                                <td>2024-01-17</td>
-                                <td>2024-01-22</td>
-                                <td>
-                                    <a href="#" class="product-link" onclick="showProductInfo('11111')">11111</a>
-                                </td>
-                                <td>
-                                    <i class="fas fa-eye eye-icon" onclick="openReviewModal('VID-003', 'original')" title="播放原始视频"></i>
-                                </td>
-                                <td>
-                                    <i class="fas fa-eye eye-icon" onclick="openReviewModal('VID-003', 'artwork')" title="播放艺术字视频"></i>
-                                </td>
-                                <td>视频质量优秀，艺术字效果良好</td>
-                                <td>
-                                    <img src="https://via.placeholder.com/60x40/10b981/ffffff?text=截图1" class="screenshot-thumbnail" onclick="showScreenshot('screenshot1')">
-                                    <img src="https://via.placeholder.com/60x40/10b981/ffffff?text=截图2" class="screenshot-thumbnail" onclick="showScreenshot('screenshot2')">
-                                </td>
-                                <td>整体效果很好，符合UED标准</td>
-                                <td>
-                                    <img src="https://via.placeholder.com/60x40/3b82f6/ffffff?text=UED1" class="screenshot-thumbnail" onclick="showScreenshot('ued1')">
-                                    <img src="https://via.placeholder.com/60x40/3b82f6/ffffff?text=UED2" class="screenshot-thumbnail" onclick="showScreenshot('ued2')">
-                                </td>
-                                <td>
-                                    <button class="btn btn-outline-info btn-sm" onclick="showProductionDetails('VID-003')">详情</button>
-                                </td>
-                            </tr>
+                            <!-- 视频数据将通过JavaScript动态加载 -->
                         </tbody>
                     </table>
                 </div>
@@ -847,7 +637,7 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="mb-3">
-                                <video class="video-player" controls>
+                                <video class="video-player" controls id="reviewVideo">
                                     <source src="https://vos.vipstatic.com/mre-admin.vip.vip.com/cv-ued-wp-video/2025_10_21_09_26_34_164495-40939.mp4" type="video/mp4">
                                     您的浏览器不支持视频播放。
                                 </video>
@@ -861,7 +651,7 @@
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">审核员</label>
-                                <input type="text" class="form-control" value="王嘉欣" readonly>
+                                <input type="text" class="form-control" id="reviewerName" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">审核结果</label>
@@ -995,47 +785,197 @@
         const mockVideos = [
             {
                 id: 'VID-001',
-                name: '男士衬衫展示视频',
-                reviewer: '王嘉欣',
-                annotationStatus: '未审核',
-                artworkPerson: '王量',
-                uedStatus: '未审核',
-                stage: '待标注审核',
+                material_name: 'VIP自A富男式衬0171',
+                annotation_reviewer: '王嘉欣',
+                annotation_status: '未审核',
+                artwork_person: '王量',
+                ued_status: '未审核',
+                current_stage: '待标注审核',
                 category: '男装/男上装/男士衬衫',
                 brand: '富铤',
-                materialInfo: 'VIP自A富男式衬0171',
-                productId: '12345',
-                videoUrl: 'https://vos.vipstatic.com/mre-admin.vip.vip.com/cv-ued-wp-video/2025_10_21_09_26_34_164495-40939.mp4'
+                selection_date: '2024-01-15',
+                provide_date: '2024-01-20',
+                product_id: '12345',
+                product_url: 'https://example.com/product/12345',
+                original_video_url: 'https://vos.vipstatic.com/mre-admin.vip.vip.com/cv-ued-wp-video/2025_10_21_09_26_34_164495-40939.mp4',
+                artwork_video_url: null,
+                annotation_comment: '',
+                annotation_screenshots: [],
+                ued_comment: '',
+                ued_screenshots: []
             },
             {
                 id: 'VID-002',
-                name: '女装连衣裙视频',
-                reviewer: '王量',
-                annotationStatus: '可用',
-                artworkPerson: '豆玉欣',
-                uedStatus: '未审核',
-                stage: '待加艺术字',
+                material_name: 'VIP自A女装连衣裙',
+                annotation_reviewer: '王量',
+                annotation_status: '可用',
+                artwork_person: '豆玉欣',
+                ued_status: '未审核',
+                current_stage: '待加艺术字',
                 category: '女装/连衣裙/长袖连衣裙',
                 brand: 'VIP自营',
-                materialInfo: 'VIP自A女装连衣裙',
-                productId: '67890',
-                videoUrl: 'https://vos.vipstatic.com/mre-admin.vip.vip.com/cv-ued-wp-video/2025_10_21_09_26_59_663020-70687.mp4'
+                selection_date: '2024-01-16',
+                provide_date: '2024-01-21',
+                product_id: '67890',
+                product_url: 'https://example.com/product/67890',
+                original_video_url: 'https://vos.vipstatic.com/mre-admin.vip.vip.com/cv-ued-wp-video/2025_10_21_09_26_59_663020-70687.mp4',
+                artwork_video_url: null,
+                annotation_comment: '视频质量良好，符合要求',
+                annotation_screenshots: ['screenshot1.jpg'],
+                ued_comment: '',
+                ued_screenshots: []
             },
             {
                 id: 'VID-003',
-                name: '运动鞋广告视频',
-                reviewer: '豆玉欣',
-                annotationStatus: '可用',
-                artworkPerson: '王嘉欣',
-                uedStatus: '可用',
-                stage: 'UED审核通过',
+                material_name: 'VIP自A运动鞋',
+                annotation_reviewer: '豆玉欣',
+                annotation_status: '可用',
+                artwork_person: '王嘉欣',
+                ued_status: '可用',
+                current_stage: 'UED审核通过',
                 category: '鞋靴/运动鞋/跑步鞋',
                 brand: '富铤',
-                materialInfo: 'VIP自A运动鞋',
-                productId: '11111',
-                videoUrl: 'https://vos.vipstatic.com/mre-admin.vip.vip.com/cv-ued-wp-video/2025_10_21_09_45_57_172629-52445.mp4'
+                selection_date: '2024-01-17',
+                provide_date: '2024-01-22',
+                product_id: '11111',
+                product_url: 'https://example.com/product/11111',
+                original_video_url: 'https://vos.vipstatic.com/mre-admin.vip.vip.com/cv-ued-wp-video/2025_10_21_09_45_57_172629-52445.mp4',
+                artwork_video_url: 'https://vos.vipstatic.com/mre-admin.vip.vip.com/cv-ued-wp-video/2025_10_21_09_51_21_099689-27611.mp4',
+                annotation_comment: '视频质量优秀，艺术字效果良好',
+                annotation_screenshots: ['screenshot1.jpg', 'screenshot2.jpg'],
+                ued_comment: '整体效果很好，符合UED标准',
+                ued_screenshots: ['ued1.jpg', 'ued2.jpg']
             }
         ];
+
+        let currentVideos = [...mockVideos];
+        let currentReviewVideo = null;
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadVideos();
+        });
+
+        // 加载视频列表
+        function loadVideos() {
+            renderVideosTable(currentVideos);
+        }
+
+        // 渲染视频表格
+        function renderVideosTable(videos) {
+            const tbody = document.getElementById('videosTableBody');
+            tbody.innerHTML = '';
+
+            videos.forEach(video => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="checkbox-column">
+                        <input type="checkbox" class="video-checkbox" value="${video.id}">
+                    </td>
+                    <td>
+                        <div class="material-info" title="${video.material_name} - 高品质产品，精选面料，舒适透气">
+                            ${video.material_name}
+                        </div>
+                    </td>
+                    <td>
+                        <select class="form-select form-select-sm" onchange="updateReviewer('${video.id}', this.value)">
+                            <option value="">未分配</option>
+                            <option value="王嘉欣" ${video.annotation_reviewer === '王嘉欣' ? 'selected' : ''}>王嘉欣</option>
+                            <option value="王量" ${video.annotation_reviewer === '王量' ? 'selected' : ''}>王量</option>
+                            <option value="豆玉欣" ${video.annotation_reviewer === '豆玉欣' ? 'selected' : ''}>豆玉欣</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select form-select-sm" onchange="updateAnnotationStatus('${video.id}', this.value)">
+                            <option value="未审核" ${video.annotation_status === '未审核' ? 'selected' : ''}>未审核</option>
+                            <option value="可用" ${video.annotation_status === '可用' ? 'selected' : ''}>可用</option>
+                            <option value="不可用" ${video.annotation_status === '不可用' ? 'selected' : ''}>不可用</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select form-select-sm" onchange="updateArtworkPerson('${video.id}', this.value)">
+                            <option value="">未分配</option>
+                            <option value="王嘉欣" ${video.artwork_person === '王嘉欣' ? 'selected' : ''}>王嘉欣</option>
+                            <option value="王量" ${video.artwork_person === '王量' ? 'selected' : ''}>王量</option>
+                            <option value="豆玉欣" ${video.artwork_person === '豆玉欣' ? 'selected' : ''}>豆玉欣</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select form-select-sm" onchange="updateUedStatus('${video.id}', this.value)">
+                            <option value="未审核" ${video.ued_status === '未审核' ? 'selected' : ''}>未审核</option>
+                            <option value="可用" ${video.ued_status === '可用' ? 'selected' : ''}>可用</option>
+                            <option value="不可用" ${video.ued_status === '不可用' ? 'selected' : ''}>不可用</option>
+                        </select>
+                    </td>
+                    <td>
+                        <div class="stage-indicator">
+                            <span class="stage-item ${getStageClass(video.current_stage)}">${video.current_stage}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="category-info">${video.category}</div>
+                    </td>
+                    <td>
+                        <div class="brand-info">${video.brand}</div>
+                    </td>
+                    <td>${video.selection_date}</td>
+                    <td>${video.provide_date}</td>
+                    <td>
+                        <a href="${video.product_url}" class="product-link" target="_blank">${video.product_id}</a>
+                    </td>
+                    <td>
+                        <i class="fas fa-eye eye-icon" onclick="openReviewModal('${video.id}', 'original')" title="播放原始视频"></i>
+                    </td>
+                    <td>
+                        ${getArtworkVideoDisplay(video)}
+                    </td>
+                    <td>${video.annotation_comment || '--'}</td>
+                    <td>
+                        ${getScreenshotsDisplay(video.annotation_screenshots)}
+                    </td>
+                    <td>${video.ued_comment || '--'}</td>
+                    <td>
+                        ${getScreenshotsDisplay(video.ued_screenshots)}
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-info btn-sm" onclick="showProductionDetails('${video.id}')">详情</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // 获取阶段样式类
+        function getStageClass(stage) {
+            if (stage.includes('通过')) return 'completed';
+            if (stage.includes('不通过')) return 'rejected';
+            return 'active';
+        }
+
+        // 获取艺术字视频显示
+        function getArtworkVideoDisplay(video) {
+            if (video.annotation_status === '不可用') {
+                return '--';
+            } else if (video.annotation_status === '未审核') {
+                return '--';
+            } else if (video.artwork_video_url) {
+                return `<i class="fas fa-eye eye-icon" onclick="openReviewModal('${video.id}', 'artwork')" title="播放艺术字视频"></i>`;
+            } else {
+                return `<button class="upload-btn" onclick="openUploadModal('${video.id}')">上传视频</button>`;
+            }
+        }
+
+        // 获取截图显示
+        function getScreenshotsDisplay(screenshots) {
+            if (!screenshots || screenshots.length === 0) {
+                return '无截图';
+            }
+            return screenshots.map((screenshot, index) => 
+                `<img src="https://via.placeholder.com/60x40/10b981/ffffff?text=截图${index + 1}" 
+                      class="screenshot-thumbnail me-1" 
+                      onclick="showScreenshot('${screenshot}')">`
+            ).join('');
+        }
 
         // 筛选功能
         function applyFilters() {
@@ -1044,14 +984,14 @@
         }
 
         function resetFilters() {
-            document.getElementById('completionStatus').value = '';
-            document.getElementById('currentStage').value = '';
-            document.getElementById('reviewer').value = '';
-            document.getElementById('brand').value = '';
-            document.getElementById('videoDate').value = '';
-            document.getElementById('productId').value = '';
-            document.getElementById('annotationStatus').value = '';
-            document.getElementById('uedStatus').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('stageFilter').value = '';
+            document.getElementById('reviewerFilter').value = '';
+            document.getElementById('brandFilter').value = '';
+            document.getElementById('provideDateFilter').value = '';
+            document.getElementById('productIdFilter').value = '';
+            document.getElementById('annotationStatusFilter').value = '';
+            document.getElementById('uedStatusFilter').value = '';
         }
 
         // 选择功能
@@ -1074,7 +1014,7 @@
                 return;
             }
             console.log('批量分配视频:', selectedVideos);
-            // 在实际应用中，这里会打开分配模态框
+            alert(`已选择 ${selectedVideos.length} 个视频进行批量分配`);
         }
 
         function batchDownload() {
@@ -1084,39 +1024,91 @@
                 return;
             }
             console.log('批量下载视频:', selectedVideos);
-            // 在实际应用中，这里会触发下载
+            alert(`开始下载 ${selectedVideos.length} 个视频的原始文件`);
         }
 
         // 状态更新
         function updateReviewer(videoId, reviewer) {
             console.log(`更新视频 ${videoId} 的审核员为: ${reviewer}`);
+            const video = currentVideos.find(v => v.id === videoId);
+            if (video) {
+                video.annotation_reviewer = reviewer;
+            }
         }
 
         function updateAnnotationStatus(videoId, status) {
             console.log(`更新视频 ${videoId} 的标注状态为: ${status}`);
+            const video = currentVideos.find(v => v.id === videoId);
+            if (video) {
+                video.annotation_status = status;
+                // 更新当前阶段
+                updateCurrentStage(video);
+            }
         }
 
         function updateArtworkPerson(videoId, person) {
             console.log(`更新视频 ${videoId} 的加艺术字人员为: ${person}`);
+            const video = currentVideos.find(v => v.id === videoId);
+            if (video) {
+                video.artwork_person = person;
+            }
         }
 
         function updateUedStatus(videoId, status) {
             console.log(`更新视频 ${videoId} 的UED状态为: ${status}`);
+            const video = currentVideos.find(v => v.id === videoId);
+            if (video) {
+                video.ued_status = status;
+                // 更新当前阶段
+                updateCurrentStage(video);
+            }
+        }
+
+        function updateCurrentStage(video) {
+            if (video.annotation_status === '未审核') {
+                video.current_stage = '待标注审核';
+            } else if (video.annotation_status === '不可用') {
+                video.current_stage = '标注审核不通过';
+            } else if (video.annotation_status === '可用' && !video.artwork_video_url) {
+                video.current_stage = '待加艺术字';
+            } else if (video.annotation_status === '可用' && video.artwork_video_url && video.ued_status === '未审核') {
+                video.current_stage = '待UED审核';
+            } else if (video.ued_status === '可用') {
+                video.current_stage = 'UED审核通过';
+            } else if (video.ued_status === '不可用') {
+                video.current_stage = 'UED审核不通过';
+            }
         }
 
         // 审核功能
         function openReviewModal(videoId, type) {
-            console.log(`打开审核模态框 - 视频ID: ${videoId}, 类型: ${type}`);
+            const video = currentVideos.find(v => v.id === videoId);
+            if (!video) return;
+
+            currentReviewVideo = { ...video, type };
+            
             const modal = new bootstrap.Modal(document.getElementById('reviewModal'));
+            const videoElement = document.getElementById('reviewVideo');
+            const reviewerElement = document.getElementById('reviewerName');
+            
+            // 设置视频源
+            if (type === 'original') {
+                videoElement.src = video.original_video_url;
+            } else if (type === 'artwork') {
+                videoElement.src = video.artwork_video_url;
+            }
+            
+            // 设置审核员
+            reviewerElement.value = video.annotation_reviewer || video.ued_reviewer || '未分配';
+            
             modal.show();
         }
 
         function captureFrame() {
             console.log('截取当前帧');
-            // 在实际应用中，这里会截取视频当前帧
             const screenshotsContainer = document.getElementById('screenshotsContainer');
             const screenshotDiv = document.createElement('div');
-            screenshotDiv.className = 'mb-2';
+            screenshotDiv.className = 'mb-2 d-flex align-items-center';
             screenshotDiv.innerHTML = `
                 <img src="https://via.placeholder.com/100x60/10b981/ffffff?text=截图" 
                      class="screenshot-thumbnail me-2" 
@@ -1133,10 +1125,37 @@
         }
 
         function submitReview() {
-            console.log('提交审核结果');
-            // 在实际应用中，这里会提交审核结果
+            if (!currentReviewVideo) {
+                alert('请先选择要审核的视频');
+                return;
+            }
+
+            const videoId = currentReviewVideo.id;
+            const status = document.getElementById('reviewStatusSelect').value;
+            const description = document.getElementById('problemDescription').value;
+            
+            console.log('提交审核结果:', { videoId, status, description });
+            
+            // 更新视频状态
+            const video = currentVideos.find(v => v.id === videoId);
+            if (video) {
+                if (currentReviewVideo.type === 'original') {
+                    video.annotation_status = status;
+                    video.annotation_comment = description;
+                } else if (currentReviewVideo.type === 'artwork') {
+                    video.ued_status = status;
+                    video.ued_comment = description;
+                }
+                updateCurrentStage(video);
+            }
+            
+            // 重新渲染表格
+            loadVideos();
+            
             const modal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
             modal.hide();
+            
+            alert('审核结果已提交');
         }
 
         // 上传功能
@@ -1148,9 +1167,9 @@
 
         function uploadVideo() {
             console.log('上传视频文件');
-            // 在实际应用中，这里会上传视频文件
             const modal = bootstrap.Modal.getInstance(document.getElementById('uploadModal'));
             modal.hide();
+            alert('视频上传成功');
         }
 
         // 生产详情
@@ -1165,12 +1184,6 @@
             console.log(`显示截图 - ID: ${screenshotId}`);
             const modal = new bootstrap.Modal(document.getElementById('screenshotModal'));
             modal.show();
-        }
-
-        // 商品信息
-        function showProductInfo(productId) {
-            console.log(`显示商品信息 - ID: ${productId}`);
-            alert(`商品ID: ${productId}\n商品链接: https://example.com/product/${productId}`);
         }
 
         // 列设置
@@ -1209,10 +1222,7 @@
             }
         });
 
-        // 页面加载完成后的初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('视频审核管理系统演示页面已加载');
-        });
+        console.log('视频审核管理系统演示页面已加载');
     </script>
 </body>
 </html>
