@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>视频审核管理系统 - 演示版</title>
+    <title>视频审核管理系统</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -12,294 +12,820 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         
-        .demo-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-        }
-        
-        .demo-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-            overflow: hidden;
-        }
-        
-        .feature-list {
-            list-style: none;
+        .main-container {
+            max-width: 100%;
+            margin: 0;
             padding: 0;
         }
         
-        .feature-list li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #f0f0f0;
+        .filter-panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
         
-        .feature-list li:last-child {
-            border-bottom: none;
+        .content-panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
         
-        .feature-list i {
-            color: #28a745;
-            margin-right: 0.5rem;
+        .stats-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
         
-        .demo-table {
-            font-size: 0.9rem;
-        }
-        
-        .demo-table th {
-            background-color: #f8f9fa;
+        .stats-card h3 {
+            color: #1f2937;
+            font-size: 24px;
             font-weight: 600;
-            border-bottom: 2px solid #dee2e6;
+            margin-bottom: 4px;
         }
         
-        .status-badge {
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.375rem;
-            font-size: 0.75rem;
+        .stats-card p {
+            color: #6b7280;
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        .form-control, .form-select {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .btn {
+            border-radius: 6px;
+            font-size: 14px;
             font-weight: 500;
+            padding: 8px 16px;
         }
         
-        .status-pending {
-            background-color: #fff3cd;
-            color: #856404;
+        .btn-primary {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
         }
         
-        .status-approved {
-            background-color: #d4edda;
-            color: #155724;
+        .btn-primary:hover {
+            background-color: #2563eb;
+            border-color: #2563eb;
         }
         
-        .status-rejected {
-            background-color: #f8d7da;
-            color: #721c24;
+        .btn-outline-primary {
+            color: #3b82f6;
+            border-color: #3b82f6;
         }
         
-        .btn-demo {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .btn-outline-primary:hover {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+        }
+        
+        .btn-secondary {
+            background-color: #6b7280;
+            border-color: #6b7280;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #4b5563;
+            border-color: #4b5563;
+        }
+        
+        .btn-success {
+            background-color: #10b981;
+            border-color: #10b981;
+        }
+        
+        .btn-success:hover {
+            background-color: #059669;
+            border-color: #059669;
+        }
+        
+        .btn-danger {
+            background-color: #ef4444;
+            border-color: #ef4444;
+        }
+        
+        .btn-danger:hover {
+            background-color: #dc2626;
+            border-color: #dc2626;
+        }
+        
+        .btn-warning {
+            background-color: #f59e0b;
+            border-color: #f59e0b;
+        }
+        
+        .btn-warning:hover {
+            background-color: #d97706;
+            border-color: #d97706;
+        }
+        
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+        
+        .table {
+            margin-bottom: 0;
+        }
+        
+        .table th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+            padding: 12px 8px;
+        }
+        
+        .table td {
+            padding: 12px 8px;
+            vertical-align: middle;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+        
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .badge {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 8px;
+        }
+        
+        .badge.bg-success {
+            background-color: #10b981 !important;
+        }
+        
+        .badge.bg-warning {
+            background-color: #f59e0b !important;
+        }
+        
+        .badge.bg-danger {
+            background-color: #ef4444 !important;
+        }
+        
+        .badge.bg-secondary {
+            background-color: #6b7280 !important;
+        }
+        
+        .badge.bg-info {
+            background-color: #3b82f6 !important;
+        }
+        
+        .badge.bg-primary {
+            background-color: #8b5cf6 !important;
+        }
+        
+        .dropdown-toggle::after {
+            margin-left: 0.5em;
+        }
+        
+        .dropdown-menu {
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dropdown-item {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .modal-content {
             border: none;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            text-decoration: none;
-            display: inline-block;
-            margin: 0.25rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
         
-        .btn-demo:hover {
-            color: white;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        .modal-header {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 20px 24px;
         }
         
-        .screenshot-preview {
+        .modal-body {
+            padding: 24px;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid #e5e7eb;
+            padding: 20px 24px;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+        
+        .alert {
+            border: none;
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+        
+        .alert-success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .alert-danger {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .alert-warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .alert-info {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .video-player {
+            width: 100%;
             max-width: 100%;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
-        .workflow-step {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 1rem;
-            margin: 0.5rem 0;
-            border-radius: 0 8px 8px 0;
+        .screenshot-thumbnail {
+            width: 60px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 2px solid #e5e7eb;
         }
         
-        .tech-stack {
+        .screenshot-thumbnail:hover {
+            border-color: #3b82f6;
+        }
+        
+        .stage-indicator {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
         }
         
-        .tech-badge {
-            background: #e9ecef;
-            color: #495057;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.375rem;
-            font-size: 0.8rem;
+        .stage-item {
+            padding: 4px 8px;
+            border-radius: 4px;
+            background-color: #f3f4f6;
+            color: #6b7280;
+        }
+        
+        .stage-item.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .stage-item.completed {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .stage-arrow {
+            color: #9ca3af;
+        }
+        
+        .eye-icon {
+            color: #3b82f6;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .eye-icon:hover {
+            background-color: #dbeafe;
+            transform: scale(1.1);
+        }
+        
+        .upload-btn {
+            background-color: #10b981;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .upload-btn:hover {
+            background-color: #059669;
+        }
+        
+        .checkbox-column {
+            width: 40px;
+            text-align: center;
+        }
+        
+        .material-info {
+            font-size: 12px;
+            color: #6b7280;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .material-info:hover {
+            overflow: visible;
+            white-space: normal;
+            background-color: #f8f9fa;
+            padding: 4px;
+            border-radius: 4px;
+            position: absolute;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .category-info {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        .brand-info {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        .product-link {
+            color: #3b82f6;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        
+        .product-link:hover {
+            text-decoration: underline;
+        }
+        
+        .filter-row {
+            display: flex;
+            gap: 12px;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+        
+        .filter-item {
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .filter-item.wide {
+            flex: 2;
+            min-width: 200px;
+        }
+        
+        .filter-item.narrow {
+            flex: 0.5;
+            min-width: 80px;
+        }
+        
+        .column-settings-btn {
+            background-color: #6b7280;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .column-settings-btn:hover {
+            background-color: #4b5563;
+        }
+        
+        .demo-notice {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .demo-notice i {
+            margin-right: 0.5rem;
         }
     </style>
 </head>
 <body>
-    <!-- 演示头部 -->
-    <div class="demo-header">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h1 class="mb-3">
-                        <i class="fas fa-video me-3"></i>
-                        视频审核管理系统
-                    </h1>
-                    <p class="lead mb-0">基于Flask + Bootstrap的现代化视频生产审核工作流管理平台</p>
+    <div class="main-container">
+        <!-- 演示提示 -->
+        <div class="container-fluid">
+            <div class="demo-notice">
+                <i class="fas fa-info-circle"></i>
+                <strong>演示模式</strong> - 这是静态演示版本，展示系统界面和功能。完整功能需要本地部署Flask应用。
+            </div>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="stats-card">
+                        <h3>156</h3>
+                        <p>总视频数</p>
+                    </div>
                 </div>
-                <div class="col-md-4 text-end">
-                    <div class="tech-stack">
-                        <span class="tech-badge">Python Flask</span>
-                        <span class="tech-badge">Bootstrap 5</span>
-                        <span class="tech-badge">SQLite</span>
-                        <span class="tech-badge">JavaScript</span>
+                <div class="col-md-2">
+                    <div class="stats-card">
+                        <h3>23</h3>
+                        <p>待标注审核</p>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="stats-card">
+                        <h3>45</h3>
+                        <p>待加艺术字</p>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="stats-card">
+                        <h3>67</h3>
+                        <p>待UED审核</p>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="stats-card">
+                        <h3>21</h3>
+                        <p>已完成</p>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="stats-card">
+                        <h3>0</h3>
+                        <p>审核不通过</p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="container">
-        <!-- 系统概述 -->
-        <div class="demo-card">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0"><i class="fas fa-info-circle me-2"></i>系统概述</h4>
+        <!-- 筛选面板 -->
+        <div class="container-fluid">
+            <div class="filter-panel">
+                <div class="filter-row">
+                    <div class="filter-item narrow">
+                        <label class="form-label">完成状态</label>
+                        <select class="form-select" id="completionStatus">
+                            <option value="">全部</option>
+                            <option value="completed">已完成</option>
+                            <option value="in_progress">进行中</option>
+                            <option value="pending">待处理</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label class="form-label">当前阶段</label>
+                        <select class="form-select" id="currentStage">
+                            <option value="">全部</option>
+                            <option value="annotation_review">待标注审核</option>
+                            <option value="artwork">待加艺术字</option>
+                            <option value="ued_review">待UED审核</option>
+                            <option value="completed">已完成</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label class="form-label">审核员</label>
+                        <select class="form-select" id="reviewer">
+                            <option value="">全部</option>
+                            <option value="王嘉欣">王嘉欣</option>
+                            <option value="王量">王量</option>
+                            <option value="豆玉欣">豆玉欣</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label class="form-label">品牌名称</label>
+                        <select class="form-select" id="brand">
+                            <option value="">全部</option>
+                            <option value="富铤">富铤</option>
+                            <option value="VIP自营">VIP自营</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label class="form-label">视频提供日期</label>
+                        <input type="date" class="form-control" id="videoDate">
+                    </div>
+                    <div class="filter-item narrow">
+                        <label class="form-label">商品ID</label>
+                        <input type="text" class="form-control" id="productId" placeholder="输入商品ID">
+                    </div>
+                    <div class="filter-item">
+                        <label class="form-label">标注验收状态</label>
+                        <select class="form-select" id="annotationStatus">
+                            <option value="">全部</option>
+                            <option value="未审核">未审核</option>
+                            <option value="可用">可用</option>
+                            <option value="不可用">不可用</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label class="form-label">UED验收状态</label>
+                        <select class="form-select" id="uedStatus">
+                            <option value="">全部</option>
+                            <option value="未审核">未审核</option>
+                            <option value="可用">可用</option>
+                            <option value="不可用">不可用</option>
+                        </select>
+                    </div>
+                    <div class="filter-item narrow">
+                        <button class="btn btn-primary" onclick="applyFilters()">查询</button>
+                        <button class="btn btn-secondary" onclick="resetFilters()">重置</button>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <p class="mb-3">这是一个完整的视频生产审核管理系统，将传统的Excel离线审核流程线上化，提升生产审核效率。</p>
+        </div>
+
+        <!-- 内容面板 -->
+        <div class="container-fluid">
+            <div class="content-panel">
+                <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                    <h5 class="mb-0">视频任务列表</h5>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary btn-sm" onclick="selectAll()">
+                            <i class="fas fa-check-square me-1"></i>全选
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="batchAssign()">
+                            <i class="fas fa-users me-1"></i>批量分配
+                        </button>
+                        <button class="btn btn-outline-success btn-sm" onclick="batchDownload()">
+                            <i class="fas fa-download me-1"></i>批量下载
+                        </button>
+                        <button class="column-settings-btn" onclick="showColumnSettings()">
+                            <i class="fas fa-cog me-1"></i>列设置
+                        </button>
+                    </div>
+                </div>
                 
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5><i class="fas fa-cogs me-2"></i>核心功能</h5>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-check"></i>视频任务管理</li>
-                            <li><i class="fas fa-check"></i>多阶段审核流程</li>
-                            <li><i class="fas fa-check"></i>实时状态跟踪</li>
-                            <li><i class="fas fa-check"></i>批量操作支持</li>
-                            <li><i class="fas fa-check"></i>截图标注功能</li>
-                            <li><i class="fas fa-check"></i>文件上传下载</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <h5><i class="fas fa-users me-2"></i>用户角色</h5>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-user-tie"></i>标注审核员</li>
-                            <li><i class="fas fa-user-tie"></i>UED审核员</li>
-                            <li><i class="fas fa-user-tie"></i>加艺术字人员</li>
-                            <li><i class="fas fa-user-tie"></i>项目管理员</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 工作流程 -->
-        <div class="demo-card">
-            <div class="card-header bg-success text-white">
-                <h4 class="mb-0"><i class="fas fa-project-diagram me-2"></i>审核工作流程</h4>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="workflow-step">
-                            <h6><i class="fas fa-play-circle me-2"></i>1. 视频生产</h6>
-                            <p class="mb-0">原始生产视频上传到平台</p>
-                        </div>
-                        <div class="workflow-step">
-                            <h6><i class="fas fa-search me-2"></i>2. 标注审核</h6>
-                            <p class="mb-0">标注审核员审核原始视频质量</p>
-                        </div>
-                        <div class="workflow-step">
-                            <h6><i class="fas fa-paint-brush me-2"></i>3. 加艺术字</h6>
-                            <p class="mb-0">审核通过后添加艺术字效果</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="workflow-step">
-                            <h6><i class="fas fa-eye me-2"></i>4. UED审核</h6>
-                            <p class="mb-0">UED审核员审核最终视频效果</p>
-                        </div>
-                        <div class="workflow-step">
-                            <h6><i class="fas fa-check-circle me-2"></i>5. 审核完成</h6>
-                            <p class="mb-0">所有审核通过，视频可发布</p>
-                        </div>
-                        <div class="workflow-step">
-                            <h6><i class="fas fa-times-circle me-2"></i>6. 审核不通过</h6>
-                            <p class="mb-0">返回修改或重新制作</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 界面预览 -->
-        <div class="demo-card">
-            <div class="card-header bg-info text-white">
-                <h4 class="mb-0"><i class="fas fa-desktop me-2"></i>系统界面预览</h4>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5><i class="fas fa-table me-2"></i>任务列表界面</h5>
-                        <p>支持多条件筛选、批量操作、状态管理</p>
-                        <img src="https://via.placeholder.com/500x300/667eea/ffffff?text=任务列表界面" class="screenshot-preview" alt="任务列表">
-                    </div>
-                    <div class="col-md-6">
-                        <h5><i class="fas fa-video me-2"></i>视频审核界面</h5>
-                        <p>视频播放、截图标注、审核意见录入</p>
-                        <img src="https://via.placeholder.com/500x300/764ba2/ffffff?text=视频审核界面" class="screenshot-preview" alt="审核界面">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 功能演示表格 -->
-        <div class="demo-card">
-            <div class="card-header bg-warning text-dark">
-                <h4 class="mb-0"><i class="fas fa-list me-2"></i>功能演示数据</h4>
-            </div>
-            <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover demo-table">
+                    <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>视频ID</th>
-                                <th>视频名称</th>
-                                <th>当前阶段</th>
+                                <th class="checkbox-column">
+                                    <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()">
+                                </th>
+                                <th>素材信息</th>
                                 <th>审核员</th>
-                                <th>标注状态</th>
-                                <th>UED状态</th>
-                                <th>操作</th>
+                                <th>标注验收状态</th>
+                                <th>加艺术字人员</th>
+                                <th>UED验收状态</th>
+                                <th>当前阶段</th>
+                                <th>品类</th>
+                                <th>品牌信息</th>
+                                <th>视频选品日期</th>
+                                <th>视频提供日期</th>
+                                <th>商品信息</th>
+                                <th>原始生产视频</th>
+                                <th>加艺术字视频</th>
+                                <th>标注审核意见</th>
+                                <th>标注审核截图</th>
+                                <th>UED审核意见</th>
+                                <th>UED审核截图</th>
+                                <th>生产详情</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="videosTableBody">
+                            <!-- 模拟数据 -->
                             <tr>
-                                <td>VID-001</td>
-                                <td>男士衬衫展示视频</td>
-                                <td><span class="status-badge status-pending">待标注审核</span></td>
-                                <td>王嘉欣</td>
-                                <td><span class="status-badge status-pending">未审核</span></td>
-                                <td><span class="status-badge status-pending">未审核</span></td>
+                                <td class="checkbox-column">
+                                    <input type="checkbox" class="video-checkbox" value="VID-001">
+                                </td>
                                 <td>
-                                    <a href="#" class="btn-demo" onclick="showDemo('审核功能演示')">
-                                        <i class="fas fa-eye me-1"></i>审核
-                                    </a>
+                                    <div class="material-info" title="VIP自A富男式衬0171 - 高品质男士衬衫，商务休闲两相宜，精选面料，舒适透气">
+                                        VIP自A富男式衬0171
+                                    </div>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" onchange="updateReviewer('VID-001', this.value)">
+                                        <option value="">未分配</option>
+                                        <option value="王嘉欣" selected>王嘉欣</option>
+                                        <option value="王量">王量</option>
+                                        <option value="豆玉欣">豆玉欣</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" onchange="updateAnnotationStatus('VID-001', this.value)">
+                                        <option value="未审核" selected>未审核</option>
+                                        <option value="可用">可用</option>
+                                        <option value="不可用">不可用</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" onchange="updateArtworkPerson('VID-001', this.value)">
+                                        <option value="">未分配</option>
+                                        <option value="王嘉欣">王嘉欣</option>
+                                        <option value="王量" selected>王量</option>
+                                        <option value="豆玉欣">豆玉欣</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" onchange="updateUedStatus('VID-001', this.value)">
+                                        <option value="未审核" selected>未审核</option>
+                                        <option value="可用">可用</option>
+                                        <option value="不可用">不可用</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div class="stage-indicator">
+                                        <span class="stage-item active">待标注审核</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="category-info">男装/男上装/男士衬衫</div>
+                                </td>
+                                <td>
+                                    <div class="brand-info">富铤</div>
+                                </td>
+                                <td>2024-01-15</td>
+                                <td>2024-01-20</td>
+                                <td>
+                                    <a href="#" class="product-link" onclick="showProductInfo('12345')">12345</a>
+                                </td>
+                                <td>
+                                    <i class="fas fa-eye eye-icon" onclick="openReviewModal('VID-001', 'original')" title="播放原始视频"></i>
+                                </td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>无截图</td>
+                                <td>--</td>
+                                <td>无截图</td>
+                                <td>
+                                    <button class="btn btn-outline-info btn-sm" onclick="showProductionDetails('VID-001')">详情</button>
                                 </td>
                             </tr>
+                            
                             <tr>
-                                <td>VID-002</td>
-                                <td>女装连衣裙视频</td>
-                                <td><span class="status-badge status-approved">待加艺术字</span></td>
-                                <td>王量</td>
-                                <td><span class="status-badge status-approved">可用</span></td>
-                                <td><span class="status-badge status-pending">未审核</span></td>
+                                <td class="checkbox-column">
+                                    <input type="checkbox" class="video-checkbox" value="VID-002">
+                                </td>
                                 <td>
-                                    <a href="#" class="btn-demo" onclick="showDemo('上传功能演示')">
-                                        <i class="fas fa-upload me-1"></i>上传
-                                    </a>
+                                    <div class="material-info" title="VIP自A女装连衣裙 - 优雅时尚女装，精致剪裁，展现女性魅力">
+                                        VIP自A女装连衣裙
+                                    </div>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" onchange="updateReviewer('VID-002', this.value)">
+                                        <option value="">未分配</option>
+                                        <option value="王嘉欣">王嘉欣</option>
+                                        <option value="王量" selected>王量</option>
+                                        <option value="豆玉欣">豆玉欣</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" onchange="updateAnnotationStatus('VID-002', this.value)">
+                                        <option value="未审核">未审核</option>
+                                        <option value="可用" selected>可用</option>
+                                        <option value="不可用">不可用</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" onchange="updateArtworkPerson('VID-002', this.value)">
+                                        <option value="">未分配</option>
+                                        <option value="王嘉欣">王嘉欣</option>
+                                        <option value="王量">王量</option>
+                                        <option value="豆玉欣" selected>豆玉欣</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" onchange="updateUedStatus('VID-002', this.value)">
+                                        <option value="未审核" selected>未审核</option>
+                                        <option value="可用">可用</option>
+                                        <option value="不可用">不可用</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div class="stage-indicator">
+                                        <span class="stage-item completed">待加艺术字</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="category-info">女装/连衣裙/长袖连衣裙</div>
+                                </td>
+                                <td>
+                                    <div class="brand-info">VIP自营</div>
+                                </td>
+                                <td>2024-01-16</td>
+                                <td>2024-01-21</td>
+                                <td>
+                                    <a href="#" class="product-link" onclick="showProductInfo('67890')">67890</a>
+                                </td>
+                                <td>
+                                    <i class="fas fa-eye eye-icon" onclick="openReviewModal('VID-002', 'original')" title="播放原始视频"></i>
+                                </td>
+                                <td>
+                                    <button class="upload-btn" onclick="openUploadModal('VID-002')">上传视频</button>
+                                </td>
+                                <td>视频质量良好，符合要求</td>
+                                <td>
+                                    <img src="https://via.placeholder.com/60x40/10b981/ffffff?text=截图1" class="screenshot-thumbnail" onclick="showScreenshot('screenshot1')">
+                                </td>
+                                <td>--</td>
+                                <td>无截图</td>
+                                <td>
+                                    <button class="btn btn-outline-info btn-sm" onclick="showProductionDetails('VID-002')">详情</button>
                                 </td>
                             </tr>
+                            
                             <tr>
-                                <td>VID-003</td>
-                                <td>运动鞋广告视频</td>
-                                <td><span class="status-badge status-approved">UED审核通过</span></td>
-                                <td>豆玉欣</td>
-                                <td><span class="status-badge status-approved">可用</span></td>
-                                <td><span class="status-badge status-approved">可用</span></td>
+                                <td class="checkbox-column">
+                                    <input type="checkbox" class="video-checkbox" value="VID-003">
+                                </td>
                                 <td>
-                                    <a href="#" class="btn-demo" onclick="showDemo('完成状态演示')">
-                                        <i class="fas fa-check me-1"></i>完成
-                                    </a>
+                                    <div class="material-info" title="VIP自A运动鞋 - 舒适运动鞋，透气材质，适合日常运动">
+                                        VIP自A运动鞋
+                                    </div>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" onchange="updateReviewer('VID-003', this.value)">
+                                        <option value="">未分配</option>
+                                        <option value="王嘉欣">王嘉欣</option>
+                                        <option value="王量">王量</option>
+                                        <option value="豆玉欣" selected>豆玉欣</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" onchange="updateAnnotationStatus('VID-003', this.value)">
+                                        <option value="未审核">未审核</option>
+                                        <option value="可用" selected>可用</option>
+                                        <option value="不可用">不可用</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" onchange="updateArtworkPerson('VID-003', this.value)">
+                                        <option value="">未分配</option>
+                                        <option value="王嘉欣" selected>王嘉欣</option>
+                                        <option value="王量">王量</option>
+                                        <option value="豆玉欣">豆玉欣</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" onchange="updateUedStatus('VID-003', this.value)">
+                                        <option value="未审核">未审核</option>
+                                        <option value="可用" selected>可用</option>
+                                        <option value="不可用">不可用</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div class="stage-indicator">
+                                        <span class="stage-item completed">UED审核通过</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="category-info">鞋靴/运动鞋/跑步鞋</div>
+                                </td>
+                                <td>
+                                    <div class="brand-info">富铤</div>
+                                </td>
+                                <td>2024-01-17</td>
+                                <td>2024-01-22</td>
+                                <td>
+                                    <a href="#" class="product-link" onclick="showProductInfo('11111')">11111</a>
+                                </td>
+                                <td>
+                                    <i class="fas fa-eye eye-icon" onclick="openReviewModal('VID-003', 'original')" title="播放原始视频"></i>
+                                </td>
+                                <td>
+                                    <i class="fas fa-eye eye-icon" onclick="openReviewModal('VID-003', 'artwork')" title="播放艺术字视频"></i>
+                                </td>
+                                <td>视频质量优秀，艺术字效果良好</td>
+                                <td>
+                                    <img src="https://via.placeholder.com/60x40/10b981/ffffff?text=截图1" class="screenshot-thumbnail" onclick="showScreenshot('screenshot1')">
+                                    <img src="https://via.placeholder.com/60x40/10b981/ffffff?text=截图2" class="screenshot-thumbnail" onclick="showScreenshot('screenshot2')">
+                                </td>
+                                <td>整体效果很好，符合UED标准</td>
+                                <td>
+                                    <img src="https://via.placeholder.com/60x40/3b82f6/ffffff?text=UED1" class="screenshot-thumbnail" onclick="showScreenshot('ued1')">
+                                    <img src="https://via.placeholder.com/60x40/3b82f6/ffffff?text=UED2" class="screenshot-thumbnail" onclick="showScreenshot('ued2')">
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-info btn-sm" onclick="showProductionDetails('VID-003')">详情</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -307,74 +833,57 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- 技术特性 -->
-        <div class="demo-card">
-            <div class="card-header bg-dark text-white">
-                <h4 class="mb-0"><i class="fas fa-code me-2"></i>技术特性</h4>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <h5><i class="fas fa-server me-2"></i>后端技术</h5>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-check"></i>Python Flask框架</li>
-                            <li><i class="fas fa-check"></i>SQLite数据库</li>
-                            <li><i class="fas fa-check"></i>RESTful API设计</li>
-                            <li><i class="fas fa-check"></i>文件上传处理</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-                        <h5><i class="fas fa-paint-brush me-2"></i>前端技术</h5>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-check"></i>Bootstrap 5响应式</li>
-                            <li><i class="fas fa-check"></i>原生JavaScript</li>
-                            <li><i class="fas fa-check"></i>Font Awesome图标</li>
-                            <li><i class="fas fa-check"></i>Canvas截图功能</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-                        <h5><i class="fas fa-tools me-2"></i>系统特性</h5>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-check"></i>多用户权限管理</li>
-                            <li><i class="fas fa-check"></i>实时状态更新</li>
-                            <li><i class="fas fa-check"></i>批量操作支持</li>
-                            <li><i class="fas fa-check"></i>数据导入导出</li>
-                        </ul>
-                    </div>
+    <!-- 审核模态框 -->
+    <div class="modal fade" id="reviewModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">视频审核</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-            </div>
-        </div>
-
-        <!-- 部署说明 -->
-        <div class="demo-card">
-            <div class="card-header bg-secondary text-white">
-                <h4 class="mb-0"><i class="fas fa-rocket me-2"></i>部署说明</h4>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5><i class="fas fa-download me-2"></i>本地部署</h5>
-                        <ol>
-                            <li>克隆项目到本地</li>
-                            <li>安装Python依赖：<code>pip install -r requirements.txt</code></li>
-                            <li>初始化数据库：<code>python init_database.py</code></li>
-                            <li>导入Excel数据：<code>python import_excel_data.py</code></li>
-                            <li>启动服务：<code>python start_simple.py</code></li>
-                            <li>访问：<code>http://localhost:3000</code></li>
-                        </ol>
-                    </div>
-                    <div class="col-md-6">
-                        <h5><i class="fas fa-cloud me-2"></i>在线演示</h5>
-                        <p>由于GitHub Pages只支持静态文件，完整功能需要本地部署。</p>
-                        <p>此页面展示了系统的界面设计和功能特性。</p>
-                        <div class="mt-3">
-                            <a href="https://github.com/xuyan14/video-review-system" class="btn-demo" target="_blank">
-                                <i class="fas fa-github me-2"></i>查看源码
-                            </a>
-                            <a href="#" class="btn-demo" onclick="showDemo('完整功能需要本地部署')">
-                                <i class="fas fa-info-circle me-2"></i>部署指南
-                            </a>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <video class="video-player" controls>
+                                    <source src="https://vos.vipstatic.com/mre-admin.vip.vip.com/cv-ued-wp-video/2025_10_21_09_26_34_164495-40939.mp4" type="video/mp4">
+                                    您的浏览器不支持视频播放。
+                                </video>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-warning" onclick="captureFrame()">
+                                    <i class="fas fa-camera me-1"></i>截帧
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">审核员</label>
+                                <input type="text" class="form-control" value="王嘉欣" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">审核结果</label>
+                                <select class="form-select" id="reviewStatusSelect">
+                                    <option value="可用">可用</option>
+                                    <option value="不可用">不可用</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">审核意见</label>
+                                <textarea class="form-control" rows="4" id="problemDescription" placeholder="请输入审核意见..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">截图</label>
+                                <div id="screenshotsContainer">
+                                    <!-- 截图将在这里显示 -->
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-primary" onclick="submitReview()">提交审核</button>
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -382,19 +891,99 @@
         </div>
     </div>
 
-    <!-- 演示弹窗 -->
-    <div class="modal fade" id="demoModal" tabindex="-1">
+    <!-- 上传模态框 -->
+    <div class="modal fade" id="uploadModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">功能演示</h5>
+                    <h5 class="modal-title">上传加艺术字视频</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p id="demoContent">这是一个演示弹窗</p>
+                    <div class="mb-3">
+                        <label class="form-label">选择视频文件</label>
+                        <input type="file" class="form-control" id="videoFile" accept="video/*">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">视频预览</label>
+                        <video id="videoPreview" class="video-player" style="display: none;" controls>
+                            请选择视频文件
+                        </video>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" onclick="uploadVideo()">上传</button>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 生产详情模态框 -->
+    <div class="modal fade" id="productionModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">生产详情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <pre id="productionDetails" style="background-color: #f8f9fa; padding: 1rem; border-radius: 8px; font-size: 14px;">{
+  "脚本内容": "展示男士衬衫的商务休闲特性，突出面料质感和版型设计",
+  "分段结果": "开场3秒-产品展示，中间15秒-细节特写，结尾5秒-品牌标识",
+  "卖点": "高品质面料，商务休闲两相宜，舒适透气，版型修身",
+  "高亮字": "商务休闲 | 舒适透气 | 版型修身",
+  "音色": "男声，沉稳专业，语速适中"
+}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 截图查看模态框 -->
+    <div class="modal fade" id="screenshotModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">截图查看</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="screenshotImage" src="" class="img-fluid" style="max-height: 70vh;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 列设置模态框 -->
+    <div class="modal fade" id="columnSettingsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">列显示设置</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>可选列</h6>
+                            <div id="availableColumns" class="border p-3" style="min-height: 300px;">
+                                <!-- 可选列将在这里显示 -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>已选列</h6>
+                            <div id="selectedColumns" class="border p-3" style="min-height: 300px;">
+                                <!-- 已选列将在这里显示 -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3 d-flex gap-2">
+                        <button class="btn btn-outline-primary" onclick="selectAllColumns()">全选</button>
+                        <button class="btn btn-outline-secondary" onclick="deselectAllColumns()">全不选</button>
+                        <button class="btn btn-outline-info" onclick="resetToDefault()">恢复默认</button>
+                        <button class="btn btn-primary" onclick="saveColumnSettings()">保存设置</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -402,23 +991,227 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function showDemo(message) {
-            document.getElementById('demoContent').textContent = message;
-            new bootstrap.Modal(document.getElementById('demoModal')).show();
+        // 模拟数据
+        const mockVideos = [
+            {
+                id: 'VID-001',
+                name: '男士衬衫展示视频',
+                reviewer: '王嘉欣',
+                annotationStatus: '未审核',
+                artworkPerson: '王量',
+                uedStatus: '未审核',
+                stage: '待标注审核',
+                category: '男装/男上装/男士衬衫',
+                brand: '富铤',
+                materialInfo: 'VIP自A富男式衬0171',
+                productId: '12345',
+                videoUrl: 'https://vos.vipstatic.com/mre-admin.vip.vip.com/cv-ued-wp-video/2025_10_21_09_26_34_164495-40939.mp4'
+            },
+            {
+                id: 'VID-002',
+                name: '女装连衣裙视频',
+                reviewer: '王量',
+                annotationStatus: '可用',
+                artworkPerson: '豆玉欣',
+                uedStatus: '未审核',
+                stage: '待加艺术字',
+                category: '女装/连衣裙/长袖连衣裙',
+                brand: 'VIP自营',
+                materialInfo: 'VIP自A女装连衣裙',
+                productId: '67890',
+                videoUrl: 'https://vos.vipstatic.com/mre-admin.vip.vip.com/cv-ued-wp-video/2025_10_21_09_26_59_663020-70687.mp4'
+            },
+            {
+                id: 'VID-003',
+                name: '运动鞋广告视频',
+                reviewer: '豆玉欣',
+                annotationStatus: '可用',
+                artworkPerson: '王嘉欣',
+                uedStatus: '可用',
+                stage: 'UED审核通过',
+                category: '鞋靴/运动鞋/跑步鞋',
+                brand: '富铤',
+                materialInfo: 'VIP自A运动鞋',
+                productId: '11111',
+                videoUrl: 'https://vos.vipstatic.com/mre-admin.vip.vip.com/cv-ued-wp-video/2025_10_21_09_45_57_172629-52445.mp4'
+            }
+        ];
+
+        // 筛选功能
+        function applyFilters() {
+            console.log('应用筛选条件');
+            // 在实际应用中，这里会发送请求到后端
         }
 
-        // 添加一些交互效果
+        function resetFilters() {
+            document.getElementById('completionStatus').value = '';
+            document.getElementById('currentStage').value = '';
+            document.getElementById('reviewer').value = '';
+            document.getElementById('brand').value = '';
+            document.getElementById('videoDate').value = '';
+            document.getElementById('productId').value = '';
+            document.getElementById('annotationStatus').value = '';
+            document.getElementById('uedStatus').value = '';
+        }
+
+        // 选择功能
+        function selectAll() {
+            const checkboxes = document.querySelectorAll('.video-checkbox');
+            checkboxes.forEach(checkbox => checkbox.checked = true);
+            document.getElementById('selectAllCheckbox').checked = true;
+        }
+
+        function toggleSelectAll() {
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const checkboxes = document.querySelectorAll('.video-checkbox');
+            checkboxes.forEach(checkbox => checkbox.checked = selectAllCheckbox.checked);
+        }
+
+        function batchAssign() {
+            const selectedVideos = Array.from(document.querySelectorAll('.video-checkbox:checked')).map(cb => cb.value);
+            if (selectedVideos.length === 0) {
+                alert('请先选择要分配的视频');
+                return;
+            }
+            console.log('批量分配视频:', selectedVideos);
+            // 在实际应用中，这里会打开分配模态框
+        }
+
+        function batchDownload() {
+            const selectedVideos = Array.from(document.querySelectorAll('.video-checkbox:checked')).map(cb => cb.value);
+            if (selectedVideos.length === 0) {
+                alert('请先选择要下载的视频');
+                return;
+            }
+            console.log('批量下载视频:', selectedVideos);
+            // 在实际应用中，这里会触发下载
+        }
+
+        // 状态更新
+        function updateReviewer(videoId, reviewer) {
+            console.log(`更新视频 ${videoId} 的审核员为: ${reviewer}`);
+        }
+
+        function updateAnnotationStatus(videoId, status) {
+            console.log(`更新视频 ${videoId} 的标注状态为: ${status}`);
+        }
+
+        function updateArtworkPerson(videoId, person) {
+            console.log(`更新视频 ${videoId} 的加艺术字人员为: ${person}`);
+        }
+
+        function updateUedStatus(videoId, status) {
+            console.log(`更新视频 ${videoId} 的UED状态为: ${status}`);
+        }
+
+        // 审核功能
+        function openReviewModal(videoId, type) {
+            console.log(`打开审核模态框 - 视频ID: ${videoId}, 类型: ${type}`);
+            const modal = new bootstrap.Modal(document.getElementById('reviewModal'));
+            modal.show();
+        }
+
+        function captureFrame() {
+            console.log('截取当前帧');
+            // 在实际应用中，这里会截取视频当前帧
+            const screenshotsContainer = document.getElementById('screenshotsContainer');
+            const screenshotDiv = document.createElement('div');
+            screenshotDiv.className = 'mb-2';
+            screenshotDiv.innerHTML = `
+                <img src="https://via.placeholder.com/100x60/10b981/ffffff?text=截图" 
+                     class="screenshot-thumbnail me-2" 
+                     onclick="showScreenshot('screenshot')">
+                <button class="btn btn-sm btn-outline-danger" onclick="removeScreenshot(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            screenshotsContainer.appendChild(screenshotDiv);
+        }
+
+        function removeScreenshot(button) {
+            button.parentElement.remove();
+        }
+
+        function submitReview() {
+            console.log('提交审核结果');
+            // 在实际应用中，这里会提交审核结果
+            const modal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
+            modal.hide();
+        }
+
+        // 上传功能
+        function openUploadModal(videoId) {
+            console.log(`打开上传模态框 - 视频ID: ${videoId}`);
+            const modal = new bootstrap.Modal(document.getElementById('uploadModal'));
+            modal.show();
+        }
+
+        function uploadVideo() {
+            console.log('上传视频文件');
+            // 在实际应用中，这里会上传视频文件
+            const modal = bootstrap.Modal.getInstance(document.getElementById('uploadModal'));
+            modal.hide();
+        }
+
+        // 生产详情
+        function showProductionDetails(videoId) {
+            console.log(`显示生产详情 - 视频ID: ${videoId}`);
+            const modal = new bootstrap.Modal(document.getElementById('productionModal'));
+            modal.show();
+        }
+
+        // 截图查看
+        function showScreenshot(screenshotId) {
+            console.log(`显示截图 - ID: ${screenshotId}`);
+            const modal = new bootstrap.Modal(document.getElementById('screenshotModal'));
+            modal.show();
+        }
+
+        // 商品信息
+        function showProductInfo(productId) {
+            console.log(`显示商品信息 - ID: ${productId}`);
+            alert(`商品ID: ${productId}\n商品链接: https://example.com/product/${productId}`);
+        }
+
+        // 列设置
+        function showColumnSettings() {
+            console.log('显示列设置');
+            const modal = new bootstrap.Modal(document.getElementById('columnSettingsModal'));
+            modal.show();
+        }
+
+        function selectAllColumns() {
+            console.log('全选列');
+        }
+
+        function deselectAllColumns() {
+            console.log('全不选列');
+        }
+
+        function resetToDefault() {
+            console.log('恢复默认设置');
+        }
+
+        function saveColumnSettings() {
+            console.log('保存列设置');
+            const modal = bootstrap.Modal.getInstance(document.getElementById('columnSettingsModal'));
+            modal.hide();
+        }
+
+        // 文件预览
+        document.getElementById('videoFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const videoPreview = document.getElementById('videoPreview');
+                const url = URL.createObjectURL(file);
+                videoPreview.src = url;
+                videoPreview.style.display = 'block';
+            }
+        });
+
+        // 页面加载完成后的初始化
         document.addEventListener('DOMContentLoaded', function() {
-            // 为演示按钮添加悬停效果
-            const demoButtons = document.querySelectorAll('.btn-demo');
-            demoButtons.forEach(button => {
-                button.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-2px)';
-                });
-                button.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                });
-            });
+            console.log('视频审核管理系统演示页面已加载');
         });
     </script>
 </body>
