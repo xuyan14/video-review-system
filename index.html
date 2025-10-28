@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频审核管理系统 - 演示版</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .demo-section {
+            background: white;
+            padding: 60px 0;
+        }
+        
+        .tech-stack {
+            background: #f8f9fa;
+            padding: 60px 0;
+        }
+        
+        .tech-item {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .tech-icon {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .btn-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+        }
+        
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="fas fa-video me-2 text-primary"></i>
+                视频审核管理系统
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">功能特性</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#demo">系统演示</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tech">技术架构</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#deploy">部署指南</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-4">视频审核管理系统</h1>
+                    <p class="lead mb-4">将传统的离线视频生产审核流程线上化，提升视频生产审核效率</p>
+                    <p class="mb-4">支持完整的视频审核工作流，包括标注审核、UED审核、加艺术字等环节</p>
+                    <a href="#demo" class="btn btn-light btn-lg me-3">
+                        <i class="fas fa-play me-2"></i>查看演示
+                    </a>
+                    <a href="https://github.com/your-username/video-review-system" class="btn btn-outline-light btn-lg" target="_blank">
+                        <i class="fab fa-github me-2"></i>GitHub源码
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 功能特性 -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="display-5 fw-bold mb-3">功能特性</h2>
+                    <p class="lead text-muted">完整的视频审核管理解决方案</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h4>视频管理</h4>
+                        <p>支持视频信息展示、分类管理、状态跟踪，完整的视频生命周期管理</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h4>审核工作流</h4>
+                        <p>完整的标注审核 → 加艺术字 → UED审核流程，标准化审核流程</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h4>在线审核</h4>
+                        <p>支持视频播放、截图、审核意见填写，提升审核效率</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4>人员管理</h4>
+                        <p>审核员分配、批量操作支持，灵活的人员管理机制</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-filter"></i>
+                        </div>
+                        <h4>多维度筛选</h4>
+                        <p>按日期、品牌、商品ID、审核状态等筛选，快速定位目标视频</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h4>数据统计</h4>
+                        <p>审核进度统计和展示，实时了解项目进展</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 系统演示 -->
+    <section id="demo" class="demo-section">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="display-5 fw-bold mb-3">系统演示</h2>
+                    <p class="lead text-muted">体验完整的视频审核流程</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-desktop me-2 text-primary"></i>
+                                完整功能演示
+                            </h5>
+                            <p class="card-text">由于GitHub Pages的限制，完整功能需要本地部署。请按照部署指南在本地运行系统。</p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>视频播放和审核</li>
+                                <li><i class="fas fa-check text-success me-2"></i>截图功能</li>
+                                <li><i class="fas fa-check text-success me-2"></i>文件上传</li>
+                                <li><i class="fas fa-check text-success me-2"></i>批量操作</li>
+                                <li><i class="fas fa-check text-success me-2"></i>数据统计</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-code me-2 text-primary"></i>
+                                技术实现
+                            </h5>
+                            <p class="card-text">系统采用现代化的技术栈，确保稳定性和可扩展性。</p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Python Flask后端</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Bootstrap 5前端</li>
+                                <li><i class="fas fa-check text-success me-2"></i>SQLite数据库</li>
+                                <li><i class="fas fa-check text-success me-2"></i>响应式设计</li>
+                                <li><i class="fas fa-check text-success me-2"></i>RESTful API</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技术架构 -->
+    <section id="tech" class="tech-stack">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="display-5 fw-bold mb-3">技术架构</h2>
+                    <p class="lead text-muted">现代化的技术栈，确保系统稳定可靠</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <h5>Python Flask</h5>
+                        <p class="text-muted">轻量级Web框架，快速开发</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-html5"></i>
+                        </div>
+                        <h5>HTML5 + CSS3</h5>
+                        <p class="text-muted">现代化前端技术</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-js-square"></i>
+                        </div>
+                        <h5>JavaScript</h5>
+                        <p class="text-muted">动态交互和用户体验</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h5>SQLite3</h5>
+                        <p class="text-muted">轻量级数据库</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 部署指南 -->
+    <section id="deploy" class="py-5">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="display-5 fw-bold mb-3">快速部署</h2>
+                    <p class="lead text-muted">简单几步，即可运行系统</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-rocket me-2 text-primary"></i>
+                                本地部署步骤
+                            </h5>
+                            <div class="code-block bg-light p-3 rounded">
+                                <pre><code># 1. 克隆项目
+git clone https://github.com/your-username/video-review-system.git
+cd video-review-system
+
+# 2. 创建虚拟环境
+python3 -m venv venv
+source venv/bin/activate  # Linux/Mac
+# 或 venv\Scripts\activate  # Windows
+
+# 3. 安装依赖
+pip install -r requirements.txt
+
+# 4. 初始化数据库
+python init_database.py
+python import_excel_data.py
+python add_artwork_video_field.py
+python add_screenshots_table.py
+
+# 5. 启动应用
+python start_simple.py
+
+# 6. 访问系统
+# 打开浏览器访问：http://localhost:3000</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA区域 -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="display-5 fw-bold mb-4">开始使用视频审核管理系统</h2>
+                    <p class="lead mb-4">提升您的视频审核效率，让工作流程更加标准化</p>
+                    <a href="https://github.com/your-username/video-review-system" class="btn btn-custom btn-lg me-3" target="_blank">
+                        <i class="fab fa-github me-2"></i>查看源码
+                    </a>
+                    <a href="https://github.com/your-username/video-review-system/archive/main.zip" class="btn btn-outline-light btn-lg" target="_blank">
+                        <i class="fas fa-download me-2"></i>下载项目
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h5>
+                        <i class="fas fa-video me-2"></i>
+                        视频审核管理系统
+                    </h5>
+                    <p class="text-muted">基于Web的视频生产审核平台</p>
+                </div>
+                <div class="col-lg-6 text-lg-end">
+                    <p class="text-muted mb-0">
+                        © 2025 视频审核管理系统. 基于 MIT 许可证开源.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
