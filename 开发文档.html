@@ -1,0 +1,735 @@
+
+        <!DOCTYPE html>
+        <html lang="zh-CN">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>视频审核管理系统 - 开发文档</title>
+            <style>
+                @media print {
+                    @page {
+                        size: A4;
+                        margin: 2cm;
+                    }
+                    
+                    body {
+                        font-size: 12pt;
+                        line-height: 1.4;
+                    }
+                    
+                    h1 {
+                        font-size: 18pt;
+                        page-break-before: always;
+                    }
+                    
+                    h1:first-child {
+                        page-break-before: avoid;
+                    }
+                    
+                    h2 {
+                        font-size: 16pt;
+                    }
+                    
+                    h3 {
+                        font-size: 14pt;
+                    }
+                    
+                    table {
+                        font-size: 10pt;
+                        page-break-inside: avoid;
+                    }
+                    
+                    pre, code {
+                        font-size: 9pt;
+                    }
+                }
+                
+                body {
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                    max-width: 800px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    background-color: #fff;
+                }
+                
+                h1, h2, h3, h4, h5, h6 {
+                    color: #2c3e50;
+                    margin-top: 30px;
+                    margin-bottom: 15px;
+                    font-weight: 600;
+                }
+                
+                h1 {
+                    font-size: 28px;
+                    border-bottom: 2px solid #3498db;
+                    padding-bottom: 10px;
+                }
+                
+                h2 {
+                    font-size: 24px;
+                    border-bottom: 1px solid #bdc3c7;
+                    padding-bottom: 8px;
+                }
+                
+                h3 {
+                    font-size: 20px;
+                }
+                
+                h4 {
+                    font-size: 18px;
+                }
+                
+                p {
+                    margin-bottom: 15px;
+                    text-align: justify;
+                }
+                
+                ul, ol {
+                    margin-bottom: 15px;
+                    padding-left: 30px;
+                }
+                
+                li {
+                    margin-bottom: 5px;
+                }
+                
+                table {
+                    border-collapse: collapse;
+                    width: 100%;
+                    margin-bottom: 20px;
+                    font-size: 14px;
+                }
+                
+                th, td {
+                    border: 1px solid #ddd;
+                    padding: 12px;
+                    text-align: left;
+                }
+                
+                th {
+                    background-color: #f8f9fa;
+                    font-weight: 600;
+                    color: #2c3e50;
+                }
+                
+                tr:nth-child(even) {
+                    background-color: #f8f9fa;
+                }
+                
+                code {
+                    background-color: #f4f4f4;
+                    padding: 2px 4px;
+                    border-radius: 3px;
+                    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+                    font-size: 13px;
+                }
+                
+                pre {
+                    background-color: #f8f9fa;
+                    border: 1px solid #e9ecef;
+                    border-radius: 5px;
+                    padding: 15px;
+                    overflow-x: auto;
+                    margin-bottom: 20px;
+                }
+                
+                pre code {
+                    background-color: transparent;
+                    padding: 0;
+                }
+                
+                blockquote {
+                    border-left: 4px solid #3498db;
+                    margin: 20px 0;
+                    padding: 10px 20px;
+                    background-color: #f8f9fa;
+                    font-style: italic;
+                }
+                
+                .print-instructions {
+                    background-color: #e3f2fd;
+                    border: 1px solid #2196f3;
+                    border-radius: 5px;
+                    padding: 15px;
+                    margin-bottom: 20px;
+                    font-size: 14px;
+                }
+                
+                .print-instructions h3 {
+                    margin-top: 0;
+                    color: #1976d2;
+                }
+                
+                .print-instructions ul {
+                    margin-bottom: 0;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="print-instructions">
+                <h3>📄 打印为PDF说明</h3>
+                <ul>
+                    <li>按 <strong>Ctrl+P</strong> (Windows) 或 <strong>Cmd+P</strong> (Mac) 打开打印对话框</li>
+                    <li>选择"另存为PDF"或"保存为PDF"</li>
+                    <li>确保页面设置为A4纸张，边距为2cm</li>
+                    <li>点击"保存"即可生成PDF文件</li>
+                </ul>
+            </div>
+            
+            <h1 id="-">视频审核管理系统 - 开发文档</h1>
+<h2 id="1">1. 技术架构</h2>
+<h3 id="11">1.1 整体架构</h3>
+<pre class="codehilite"><code>┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   前端 (HTML)   │    │   后端 (Flask)  │    │   数据库 (SQLite)│
+│                 │    │                 │    │                 │
+│  - Bootstrap 5  │◄──►│  - Python Flask │◄──►│  - SQLite3      │
+│  - JavaScript   │    │  - RESTful API  │    │  - 关系型数据库  │
+│  - CSS3         │    │  - 文件上传     │    │  - 事务支持      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+</code></pre>
+
+<h3 id="12">1.2 技术栈</h3>
+<ul>
+<li><strong>前端</strong>：HTML5 + CSS3 + JavaScript + Bootstrap 5</li>
+<li><strong>后端</strong>：Python 3.9+ + Flask + SQLite3</li>
+<li><strong>数据库</strong>：SQLite3</li>
+<li><strong>文件存储</strong>：本地文件系统</li>
+<li><strong>开发环境</strong>：Python虚拟环境</li>
+</ul>
+<h2 id="2">2. 项目结构</h2>
+<pre class="codehilite"><code>video_review_system/
+├── start_simple.py              # Flask应用主文件
+├── templates/
+│   └── index.html              # 前端页面模板
+├── requirements.txt             # Python依赖包
+├── video_review.db             # SQLite数据库文件
+├── screenshots/                # 截图文件存储目录
+├── uploads/                    # 上传文件存储目录
+├── init_database.py            # 数据库初始化脚本
+├── import_excel_data.py        # Excel数据导入脚本
+├── add_artwork_video_field.py  # 数据库字段添加脚本
+├── add_screenshots_table.py    # 截图表创建脚本
+└── 工作簿3.xlsx               # 原始Excel数据文件
+</code></pre>
+
+<h2 id="3">3. 数据库设计</h2>
+<h3 id="31">3.1 表结构</h3>
+<h4 id="311-video_projects">3.1.1 video_projects 表</h4>
+<pre class="codehilite"><code class="language-sql">CREATE TABLE video_projects (
+    id TEXT PRIMARY KEY,
+    video_name TEXT NOT NULL,
+    video_url TEXT NOT NULL,
+    artwork_video_url TEXT,
+    brand TEXT,
+    category TEXT,
+    material_name TEXT,
+    material_price REAL,
+    selling_points TEXT,
+    product_id TEXT,
+    product_link TEXT,
+    selection_date TEXT,
+    provide_date TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+</code></pre>
+
+<h4 id="312-workflow_status">3.1.2 workflow_status 表</h4>
+<pre class="codehilite"><code class="language-sql">CREATE TABLE workflow_status (
+    id TEXT PRIMARY KEY,
+    project_id TEXT NOT NULL,
+    current_stage TEXT,
+    completion_status TEXT,
+    annotation_reviewer TEXT,
+    ued_reviewer TEXT,
+    artwork_person TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (project_id) REFERENCES video_projects (id)
+);
+</code></pre>
+
+<h4 id="313-review_records">3.1.3 review_records 表</h4>
+<pre class="codehilite"><code class="language-sql">CREATE TABLE review_records (
+    id TEXT PRIMARY KEY,
+    project_id TEXT NOT NULL,
+    review_type TEXT NOT NULL,
+    reviewer_name TEXT,
+    review_status TEXT,
+    problem_description TEXT,
+    review_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (project_id) REFERENCES video_projects (id)
+);
+</code></pre>
+
+<h4 id="314-screenshots">3.1.4 screenshots 表</h4>
+<pre class="codehilite"><code class="language-sql">CREATE TABLE screenshots (
+    id TEXT PRIMARY KEY,
+    project_id TEXT NOT NULL,
+    review_type TEXT NOT NULL,
+    screenshot_path TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (project_id) REFERENCES video_projects (id)
+);
+</code></pre>
+
+<h3 id="32">3.2 数据库关系</h3>
+<ul>
+<li><code>video_projects</code> ←→ <code>workflow_status</code> (1:1)</li>
+<li><code>video_projects</code> ←→ <code>review_records</code> (1:N)</li>
+<li><code>video_projects</code> ←→ <code>screenshots</code> (1:N)</li>
+</ul>
+<h2 id="4-api">4. API接口设计</h2>
+<h3 id="41">4.1 项目相关接口</h3>
+<h4 id="get-apiprojects">GET /api/projects</h4>
+<p>获取项目列表</p>
+<pre class="codehilite"><code class="language-json">{
+  &quot;query_params&quot;: {
+    &quot;status&quot;: &quot;string&quot;,
+    &quot;stage&quot;: &quot;string&quot;, 
+    &quot;reviewer&quot;: &quot;string&quot;,
+    &quot;brand&quot;: &quot;string&quot;,
+    &quot;provideDate&quot;: &quot;string&quot;,
+    &quot;productId&quot;: &quot;string&quot;,
+    &quot;annotationStatus&quot;: &quot;string&quot;,
+    &quot;uedStatus&quot;: &quot;string&quot;
+  },
+  &quot;response&quot;: [
+    {
+      &quot;id&quot;: &quot;string&quot;,
+      &quot;video_name&quot;: &quot;string&quot;,
+      &quot;video_url&quot;: &quot;string&quot;,
+      &quot;artwork_video_url&quot;: &quot;string&quot;,
+      &quot;annotation_reviewer&quot;: &quot;string&quot;,
+      &quot;ued_reviewer&quot;: &quot;string&quot;,
+      &quot;annotation_status&quot;: &quot;string&quot;,
+      &quot;ued_status&quot;: &quot;string&quot;,
+      &quot;annotation_screenshots&quot;: [],
+      &quot;ued_screenshots&quot;: []
+    }
+  ]
+}
+</code></pre>
+
+<h4 id="get-apistatistics">GET /api/statistics</h4>
+<p>获取统计数据</p>
+<pre class="codehilite"><code class="language-json">{
+  &quot;response&quot;: {
+    &quot;total&quot;: 146,
+    &quot;pending_annotation&quot;: 10,
+    &quot;pending_artwork&quot;: 40,
+    &quot;pending_ued&quot;: 0,
+    &quot;completed&quot;: 3,
+    &quot;failed&quot;: 93
+  }
+}
+</code></pre>
+
+<h3 id="42">4.2 审核相关接口</h3>
+<h4 id="post-apiupdate-reviewer">POST /api/update-reviewer</h4>
+<p>更新审核员</p>
+<pre class="codehilite"><code class="language-json">{
+  &quot;request&quot;: {
+    &quot;videoId&quot;: &quot;string&quot;,
+    &quot;reviewer&quot;: &quot;string&quot;
+  },
+  &quot;response&quot;: {
+    &quot;message&quot;: &quot;审核员已更新&quot;
+  }
+}
+</code></pre>
+
+<h4 id="post-apitoggle-status">POST /api/toggle-status</h4>
+<p>切换审核状态</p>
+<pre class="codehilite"><code class="language-json">{
+  &quot;request&quot;: {
+    &quot;videoId&quot;: &quot;string&quot;,
+    &quot;type&quot;: &quot;annotation|ued&quot;,
+    &quot;status&quot;: &quot;可用|不可用&quot;,
+    &quot;reviewer&quot;: &quot;string&quot;,
+    &quot;comment&quot;: &quot;string&quot;
+  },
+  &quot;response&quot;: {
+    &quot;message&quot;: &quot;状态已更新&quot;
+  }
+}
+</code></pre>
+
+<h4 id="post-apisave-screenshot">POST /api/save-screenshot</h4>
+<p>保存截图</p>
+<pre class="codehilite"><code class="language-json">{
+  &quot;request&quot;: {
+    &quot;videoId&quot;: &quot;string&quot;,
+    &quot;reviewType&quot;: &quot;annotation|ued&quot;,
+    &quot;screenshotData&quot;: &quot;base64_string&quot;
+  },
+  &quot;response&quot;: {
+    &quot;message&quot;: &quot;截图保存成功&quot;,
+    &quot;screenshot_path&quot;: &quot;string&quot;
+  }
+}
+</code></pre>
+
+<h3 id="43">4.3 文件相关接口</h3>
+<h4 id="post-apiupload-artwork-video">POST /api/upload-artwork-video</h4>
+<p>上传加艺术字视频</p>
+<pre class="codehilite"><code class="language-json">{
+  &quot;request&quot;: &quot;multipart/form-data&quot;,
+  &quot;fields&quot;: {
+    &quot;videoFile&quot;: &quot;file&quot;,
+    &quot;videoId&quot;: &quot;string&quot;
+  },
+  &quot;response&quot;: {
+    &quot;message&quot;: &quot;视频上传成功&quot;,
+    &quot;video_url&quot;: &quot;string&quot;
+  }
+}
+</code></pre>
+
+<h4 id="get-uploads">GET /uploads/<filename></h4>
+<p>获取上传文件</p>
+<h4 id="get-screenshots">GET /screenshots/<filename></h4>
+<p>获取截图文件</p>
+<h2 id="5">5. 前端架构</h2>
+<h3 id="51">5.1 页面结构</h3>
+<pre class="codehilite"><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;视频审核管理系统&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- 筛选区域 --&gt;
+    &lt;div class=&quot;filter-section&quot;&gt;...&lt;/div&gt;
+
+    &lt;!-- 操作按钮区域 --&gt;
+    &lt;div class=&quot;action-section&quot;&gt;...&lt;/div&gt;
+
+    &lt;!-- 数据表格区域 --&gt;
+    &lt;div class=&quot;table-section&quot;&gt;...&lt;/div&gt;
+
+    &lt;!-- 审核模态框 --&gt;
+    &lt;div class=&quot;modal&quot; id=&quot;reviewModal&quot;&gt;...&lt;/div&gt;
+
+    &lt;!-- 上传模态框 --&gt;
+    &lt;div class=&quot;modal&quot; id=&quot;uploadModal&quot;&gt;...&lt;/div&gt;
+
+    &lt;!-- 列设置模态框 --&gt;
+    &lt;div class=&quot;modal&quot; id=&quot;columnSettingsModal&quot;&gt;...&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h3 id="52-javascript">5.2 JavaScript模块</h3>
+<h4 id="521">5.2.1 数据管理模块</h4>
+<pre class="codehilite"><code class="language-javascript">// 全局变量
+let currentVideos = [];
+let columnSettings = {
+    available: [...],
+    selected: [...]
+};
+
+// 数据加载
+async function loadVideos() { ... }
+async function loadStatistics() { ... }
+</code></pre>
+
+<h4 id="522">5.2.2 表格渲染模块</h4>
+<pre class="codehilite"><code class="language-javascript">// 表格渲染
+function renderVideosTable() { ... }
+function renderTableHeader() { ... }
+function getColumnContent(video, columnId) { ... }
+</code></pre>
+
+<h4 id="523">5.2.3 审核功能模块</h4>
+<pre class="codehilite"><code class="language-javascript">// 审核相关
+function openReviewModal(videoId, videoType) { ... }
+function captureFrame() { ... }
+async function submitReview() { ... }
+</code></pre>
+
+<h4 id="524">5.2.4 文件上传模块</h4>
+<pre class="codehilite"><code class="language-javascript">// 文件上传
+function openUploadModal(videoId) { ... }
+async function uploadArtworkVideo() { ... }
+</code></pre>
+
+<h2 id="6">6. 核心功能实现</h2>
+<h3 id="61">6.1 审核工作流实现</h3>
+<h4 id="611">6.1.1 状态判断逻辑</h4>
+<pre class="codehilite"><code class="language-javascript">function getStageIndicator(video) {
+    const annotationStatus = video.annotation_status;
+    const uedStatus = video.ued_status;
+    const hasArtworkVideo = video.artwork_video_url &amp;&amp; video.artwork_video_url !== '';
+
+    if (!annotationStatus || annotationStatus === '未审核') {
+        return '待标注审核';
+    } else if (annotationStatus === '不可用') {
+        return '标注审核不通过';
+    } else if (annotationStatus === '可用' &amp;&amp; !hasArtworkVideo) {
+        return '待加艺术字';
+    } else if (annotationStatus === '可用' &amp;&amp; hasArtworkVideo &amp;&amp; (!uedStatus || uedStatus === '未审核')) {
+        return '待UED审核';
+    } else if (uedStatus === '可用') {
+        return 'UED审核通过';
+    } else if (uedStatus === '不可用') {
+        return 'UED审核不通过';
+    }
+}
+</code></pre>
+
+<h4 id="612">6.1.2 加艺术字视频显示逻辑</h4>
+<pre class="codehilite"><code class="language-javascript">function getArtworkVideo(video) {
+    const annotationStatus = video.annotation_status;
+
+    // 如果标注审核状态为&quot;不可用&quot;，则显示&quot;--&quot;
+    if (annotationStatus === '不可用') {
+        return '&lt;span class=&quot;text-muted&quot;&gt;--&lt;/span&gt;';
+    }
+
+    // 如果标注审核状态为&quot;未审核&quot;或null，显示&quot;--&quot;（不显示上传按钮）
+    if (annotationStatus === '未审核' || !annotationStatus || annotationStatus === null) {
+        return '&lt;span class=&quot;text-muted&quot;&gt;--&lt;/span&gt;';
+    }
+
+    // 如果已上传加艺术字视频，显示播放按钮
+    if (video.artwork_video_url &amp;&amp; video.artwork_video_url !== '') {
+        return '&lt;i class=&quot;fas fa-eye text-primary&quot; onclick=&quot;openReviewModal(\'' + video.id + '\', \'artwork\')&quot;&gt;&lt;/i&gt;';
+    }
+
+    // 否则显示上传按钮
+    return '&lt;button class=&quot;btn btn-sm btn-outline-primary&quot; onclick=&quot;openUploadModal(\'' + video.id + '\')&quot;&gt;上传视频&lt;/button&gt;';
+}
+</code></pre>
+
+<h3 id="62">6.2 截图功能实现</h3>
+<h4 id="621">6.2.1 前端截图逻辑</h4>
+<pre class="codehilite"><code class="language-javascript">function captureFrame() {
+    const video = document.getElementById('reviewVideo');
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    const imageData = canvas.toDataURL('image/png');
+    addScreenshot('screenshot_' + Date.now(), imageData);
+}
+</code></pre>
+
+<h4 id="622">6.2.2 后端截图保存</h4>
+<pre class="codehilite"><code class="language-python">@app.route('/api/save-screenshot', methods=['POST'])
+def save_screenshot():
+    video_id = request.form.get('videoId')
+    review_type = request.form.get('reviewType')
+    screenshot_data = request.form.get('screenshotData')
+
+    # 生成文件名
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    filename = f&quot;screenshot_{video_id}_{review_type}_{timestamp}.png&quot;
+    file_path = os.path.join('screenshots', filename)
+
+    # 保存base64图片
+    if screenshot_data.startswith('data:image'):
+        screenshot_data = screenshot_data.split(',')[1]
+
+    with open(file_path, 'wb') as f:
+        f.write(base64.b64decode(screenshot_data))
+
+    # 保存到数据库
+    conn = get_db_connection()
+    conn.execute(&quot;&quot;&quot;
+        INSERT INTO screenshots (id, project_id, review_type, screenshot_path, created_at)
+        VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+    &quot;&quot;&quot;, (str(uuid.uuid4()), video_id, review_type, f&quot;/screenshots/{filename}&quot;))
+    conn.commit()
+    conn.close()
+
+    return jsonify({'message': '截图保存成功'})
+</code></pre>
+
+<h3 id="63">6.3 列设置功能实现</h3>
+<h4 id="631">6.3.1 列配置管理</h4>
+<pre class="codehilite"><code class="language-javascript">const columnSettings = {
+    available: [
+        { id: 'checkbox', name: '选择', required: true },
+        { id: 'material_info', name: '素材信息', required: true },
+        { id: 'brand', name: '品牌信息', required: false },
+        { id: 'category', name: '品类', required: false },
+        { id: 'product_info', name: '商品信息', required: false },
+        { id: 'video_dates', name: '视频日期', required: false },
+        { id: 'original_video', name: '原始生产视频', required: true },
+        { id: 'artwork_video', name: '加艺术字视频', required: true },
+        { id: 'reviewer', name: '审核员', required: true },
+        { id: 'annotation_status', name: '标注验收状态', required: true },
+        { id: 'artwork_person', name: '加艺术字人员', required: true },
+        { id: 'ued_status', name: 'UED验收状态', required: true },
+        { id: 'current_stage', name: '当前阶段', required: true },
+        { id: 'annotation_comment', name: '标注审核意见', required: false },
+        { id: 'annotation_screenshots', name: '标注审核截图', required: false },
+        { id: 'ued_comment', name: 'UED审核意见', required: false },
+        { id: 'ued_screenshots', name: 'UED审核截图', required: false },
+        { id: 'production_details', name: '生产详情', required: false }
+    ],
+    selected: ['checkbox', 'material_info', 'brand', 'category', 'product_info', 'video_dates', 'original_video', 'artwork_video', 'reviewer', 'annotation_status', 'artwork_person', 'ued_status', 'current_stage']
+};
+</code></pre>
+
+<h4 id="632">6.3.2 动态表格渲染</h4>
+<pre class="codehilite"><code class="language-javascript">function renderVideosTable() {
+    renderTableHeader();
+
+    const tbody = document.getElementById('videosTable');
+    tbody.innerHTML = '';
+
+    currentVideos.forEach(video =&gt; {
+        const row = document.createElement('tr');
+        row.dataset.videoId = video.id;
+
+        columnSettings.selected.forEach(columnId =&gt; {
+            const cell = document.createElement('td');
+            cell.innerHTML = getColumnContent(video, columnId);
+            row.appendChild(cell);
+        });
+
+        tbody.appendChild(row);
+    });
+}
+</code></pre>
+
+<h2 id="7">7. 部署说明</h2>
+<h3 id="71">7.1 环境要求</h3>
+<ul>
+<li>Python 3.9+</li>
+<li>SQLite3</li>
+<li>现代浏览器（Chrome 80+, Firefox 75+, Safari 13+, Edge 80+）</li>
+</ul>
+<h3 id="72">7.2 安装步骤</h3>
+<h4 id="721">7.2.1 创建虚拟环境</h4>
+<pre class="codehilite"><code class="language-bash">python3 -m venv venv
+source venv/bin/activate  # Linux/Mac
+# 或
+venv\Scripts\activate     # Windows
+</code></pre>
+
+<h4 id="722">7.2.2 安装依赖</h4>
+<pre class="codehilite"><code class="language-bash">pip install -r requirements.txt
+</code></pre>
+
+<h4 id="723">7.2.3 初始化数据库</h4>
+<pre class="codehilite"><code class="language-bash">python init_database.py
+python import_excel_data.py
+python add_artwork_video_field.py
+python add_screenshots_table.py
+</code></pre>
+
+<h4 id="724">7.2.4 启动应用</h4>
+<pre class="codehilite"><code class="language-bash">python start_simple.py
+</code></pre>
+
+<h3 id="73">7.3 配置说明</h3>
+<h4 id="731">7.3.1 数据库配置</h4>
+<ul>
+<li>数据库文件：<code>video_review.db</code></li>
+<li>自动创建表结构</li>
+<li>支持事务操作</li>
+</ul>
+<h4 id="732">7.3.2 文件存储配置</h4>
+<ul>
+<li>截图存储：<code>screenshots/</code> 目录</li>
+<li>视频上传：<code>uploads/</code> 目录</li>
+<li>支持大文件上传</li>
+</ul>
+<h4 id="733">7.3.3 服务器配置</h4>
+<ul>
+<li>默认端口：3000</li>
+<li>调试模式：开启</li>
+<li>自动重载：开启</li>
+</ul>
+<h2 id="8">8. 开发规范</h2>
+<h3 id="81">8.1 代码规范</h3>
+<ul>
+<li>Python代码遵循PEP 8规范</li>
+<li>JavaScript代码使用ES6+语法</li>
+<li>HTML使用语义化标签</li>
+<li>CSS使用Bootstrap 5框架</li>
+</ul>
+<h3 id="82">8.2 命名规范</h3>
+<ul>
+<li>数据库表名：下划线命名法（snake_case）</li>
+<li>变量名：驼峰命名法（camelCase）</li>
+<li>函数名：动词开头，描述性命名</li>
+<li>文件名：下划线命名法（snake_case）</li>
+</ul>
+<h3 id="83">8.3 注释规范</h3>
+<ul>
+<li>函数注释：说明功能、参数、返回值</li>
+<li>复杂逻辑注释：解释业务逻辑</li>
+<li>API接口注释：说明请求参数和响应格式</li>
+</ul>
+<h2 id="9">9. 测试说明</h2>
+<h3 id="91">9.1 功能测试</h3>
+<ul>
+<li>视频列表加载测试</li>
+<li>审核流程测试</li>
+<li>文件上传测试</li>
+<li>截图功能测试</li>
+</ul>
+<h3 id="92">9.2 性能测试</h3>
+<ul>
+<li>页面加载性能测试</li>
+<li>数据库查询性能测试</li>
+<li>文件上传性能测试</li>
+</ul>
+<h3 id="93">9.3 兼容性测试</h3>
+<ul>
+<li>浏览器兼容性测试</li>
+<li>设备兼容性测试</li>
+<li>分辨率适配测试</li>
+</ul>
+<h2 id="10">10. 维护说明</h2>
+<h3 id="101">10.1 日志管理</h3>
+<ul>
+<li>应用日志：Flask内置日志</li>
+<li>错误日志：异常捕获和记录</li>
+<li>操作日志：用户操作记录</li>
+</ul>
+<h3 id="102">10.2 数据备份</h3>
+<ul>
+<li>数据库备份：定期备份SQLite文件</li>
+<li>文件备份：定期备份上传文件</li>
+<li>配置备份：备份系统配置文件</li>
+</ul>
+<h3 id="103">10.3 性能监控</h3>
+<ul>
+<li>响应时间监控</li>
+<li>内存使用监控</li>
+<li>磁盘空间监控</li>
+</ul>
+<h2 id="11_1">11. 扩展开发</h2>
+<h3 id="111">11.1 功能扩展</h3>
+<ul>
+<li>支持更多审核类型</li>
+<li>支持自定义审核流程</li>
+<li>支持批量操作优化</li>
+</ul>
+<h3 id="112">11.2 技术升级</h3>
+<ul>
+<li>数据库升级（PostgreSQL/MySQL）</li>
+<li>缓存系统集成（Redis）</li>
+<li>消息队列集成（Celery）</li>
+</ul>
+<h3 id="113">11.3 部署优化</h3>
+<ul>
+<li>Docker容器化部署</li>
+<li>Nginx反向代理</li>
+<li>负载均衡配置</li>
+</ul>
+        </body>
+        </html>
+        
