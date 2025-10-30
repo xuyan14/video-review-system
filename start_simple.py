@@ -46,8 +46,12 @@ def get_projects():
     status = request.args.get('status')
     stage = request.args.get('stage')
     reviewer = request.args.get('reviewer')
+    artwork_person = request.args.get('artworkPerson')
     brand = request.args.get('brand')
-    provide_date = request.args.get('provideDate')
+    provide_date_start = request.args.get('provideDateStart')
+    provide_date_end = request.args.get('provideDateEnd')
+    selection_date_start = request.args.get('selectionDateStart')
+    selection_date_end = request.args.get('selectionDateEnd')
     product_id = request.args.get('productId')
     annotation_status = request.args.get('annotationStatus')
     ued_status = request.args.get('uedStatus')
@@ -72,12 +76,33 @@ def get_projects():
     if reviewer:
         conditions.append('(ws.annotation_reviewer = ? OR ws.ued_reviewer = ? OR ws.artwork_person = ?)')
         params.extend([reviewer, reviewer, reviewer])
+    if artwork_person:
+        conditions.append('ws.artwork_person = ?')
+        params.append(artwork_person)
     if brand:
         conditions.append('vp.brand_name = ?')
         params.append(brand)
-    if provide_date:
-        conditions.append('DATE(vp.video_provide_date) = ?')
-        params.append(provide_date)
+    # 提供日期范围
+    if provide_date_start and provide_date_end:
+        conditions.append('DATE(vp.video_provide_date) BETWEEN ? AND ?')
+        params.extend([provide_date_start, provide_date_end])
+    elif provide_date_start:
+        conditions.append('DATE(vp.video_provide_date) >= ?')
+        params.append(provide_date_start)
+    elif provide_date_end:
+        conditions.append('DATE(vp.video_provide_date) <= ?')
+        params.append(provide_date_end)
+
+    # 选品日期范围
+    if selection_date_start and selection_date_end:
+        conditions.append('DATE(vp.video_selection_date) BETWEEN ? AND ?')
+        params.extend([selection_date_start, selection_date_end])
+    elif selection_date_start:
+        conditions.append('DATE(vp.video_selection_date) >= ?')
+        params.append(selection_date_start)
+    elif selection_date_end:
+        conditions.append('DATE(vp.video_selection_date) <= ?')
+        params.append(selection_date_end)
     if product_id:
         conditions.append('vp.product_id LIKE ?')
         params.append(f'%{product_id}%')
@@ -481,7 +506,9 @@ def screenshot_file(filename):
 
 if __name__ == '__main__':
     print("🚀 启动视频审核管理系统...")
-    print("系统将在 http://localhost:3000 运行")
+    import os as _os
+    _port = int(_os.getenv('PORT', '3000'))
+    print(f"系统将在 http://localhost:{_port} 运行")
     print("按 Ctrl+C 停止服务器")
     
-    app.run(debug=True, host='0.0.0.0', port=3000)
+    app.run(debug=True, host='0.0.0.0', port=_port)

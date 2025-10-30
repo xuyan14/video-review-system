@@ -237,16 +237,26 @@
         }
         
         .highlight-stage .btn {
-            background-color: #fef3c7 !important;
-            border-color: #f59e0b !important;
-            color: #92400e !important;
-            box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3) !important;
+            background-color: #ef4444 !important; /* 更醒目的红色 */
+            border-color: #dc2626 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25), 0 6px 14px rgba(239, 68, 68, 0.35) !important;
+            transform: translateZ(0);
         }
         
         .highlight-stage .btn:hover {
-            background-color: #fde68a !important;
-            border-color: #d97706 !important;
-            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.4) !important;
+            background-color: #dc2626 !important; /* 深红 */
+            border-color: #b91c1c !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.35), 0 10px 18px rgba(239, 68, 68, 0.45) !important;
+        }
+        
+        /* 给红色按钮一个轻微的呼吸动画，进一步强调 */
+        .highlight-stage .btn {
+            animation: highlightPulse 1.6s ease-in-out infinite;
+        }
+        @keyframes highlightPulse {
+            0%, 100% { box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25), 0 6px 14px rgba(239, 68, 68, 0.35); }
+            50% { box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.35), 0 10px 20px rgba(239, 68, 68, 0.5); }
         }
         
         .screenshot-item {
@@ -508,23 +518,22 @@
         }
         
         .filter-row {
-            display: flex;
-            flex-wrap: nowrap;
-            gap: 6px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px; /* 栅格间距 */
             margin-bottom: 16px;
-            overflow-x: auto;
+            align-items: end;
         }
         
-        .filter-row > div {
-            flex: 0 0 100px;
-            min-width: 100px;
-        }
+        .filter-row > div { min-width: 0; }
         
         .filter-actions {
-            flex: 0 0 auto;
+            grid-column: 1 / -1; /* 跨越整行 */
             display: flex;
-            gap: 6px;
-            margin-left: 8px;
+            justify-content: flex-end; /* 右对齐到筛选区内部的右侧 */
+            align-items: center;
+            gap: 10px;
+            margin-top: 4px;
         }
         
         .filter-actions .btn {
@@ -532,6 +541,22 @@
             padding: 4px 8px;
             font-size: 12px;
             line-height: 1.2;
+            min-width: 100px;
+        }
+
+        /* 强化筛选区按钮区域的布局优先级，确保样式生效 */
+        .filter-panel .filter-actions { width: 100% !important; }
+
+        /* 预置审核意见样式 */
+        .preset-comments {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+        .preset-comments .btn {
+            padding: 2px 8px;
+            font-size: 12px;
         }
         
         .filter-row:last-of-type {
@@ -682,45 +707,7 @@
     </nav>
 
     <div class="container-fluid px-4 py-4">
-        <!-- 统计卡片 -->
-        <div class="row mb-4">
-            <div class="col-md-2">
-                <div class="stats-card">
-                    <h3 id="totalVideos">-</h3>
-                    <p class="mb-0">总视频数</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="stats-card">
-                    <h3 id="completedVideos">-</h3>
-                    <p class="mb-0">已完成</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="stats-card">
-                    <h3 id="pendingVideos">-</h3>
-                    <p class="mb-0">待处理</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="stats-card">
-                    <h3 id="annotationPending">-</h3>
-                    <p class="mb-0">标注审核</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="stats-card">
-                    <h3 id="uedPending">-</h3>
-                    <p class="mb-0">UED审核</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="stats-card">
-                    <h3 id="artworkPending">-</h3>
-                    <p class="mb-0">加艺术字</p>
-                </div>
-            </div>
-        </div>
+        
 
         <!-- 筛选面板 -->
         <div class="filter-panel">
@@ -754,6 +741,15 @@
                     </select>
                 </div>
                 <div>
+                    <label class="form-label">加艺术字人员</label>
+                    <select class="form-select" id="artworkPersonFilter">
+                        <option value="">全部人员</option>
+                        <option value="王嘉欣">王嘉欣</option>
+                        <option value="王量">王量</option>
+                        <option value="豆玉欣">豆玉欣</option>
+                    </select>
+                </div>
+                <div>
                     <label class="form-label">品牌名称</label>
                     <select class="form-select" id="brandFilter">
                         <option value="">全部品牌</option>
@@ -766,8 +762,20 @@
                     </select>
                 </div>
                 <div>
-                    <label class="form-label">视频提供日期</label>
-                    <input type="date" class="form-control" id="provideDateFilter">
+                    <label class="form-label">提供日期（起）</label>
+                    <input type="date" class="form-control" id="provideDateStart">
+                </div>
+                <div>
+                    <label class="form-label">提供日期（止）</label>
+                    <input type="date" class="form-control" id="provideDateEnd">
+                </div>
+                <div>
+                    <label class="form-label">选品日期（起）</label>
+                    <input type="date" class="form-control" id="selectionDateStart">
+                </div>
+                <div>
+                    <label class="form-label">选品日期（止）</label>
+                    <input type="date" class="form-control" id="selectionDateEnd">
                 </div>
                 <div>
                     <label class="form-label">商品ID</label>
@@ -813,6 +821,9 @@
                 <button class="btn btn-success btn-sm" onclick="batchDownloadVideos()">
                     <i class="fas fa-download me-1"></i>批量下载
                 </button>
+                <button class="btn btn-outline-success btn-sm" onclick="batchUploadArtwork()">
+                    <i class="fas fa-upload me-1"></i>批量上传艺术字
+                </button>
                 <button class="btn btn-outline-secondary btn-sm" onclick="showColumnSettings()">
                     <i class="fas fa-columns me-1"></i>列设置
                 </button>
@@ -835,6 +846,9 @@
             </div>
         </div>
     </div>
+
+    <!-- 批量上传隐藏文件选择器 -->
+    <input type="file" id="batchArtworkFileInput" accept="video/*" multiple style="display:none" />
 
 
     <!-- 视频详情模态框 -->
@@ -938,6 +952,11 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">审核意见</label>
+                                    <div class="preset-comments">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addPresetComment('断音断读')">断音断读</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addPresetComment('画面卡顿')">画面卡顿</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addPresetComment('价格信息错误')">价格信息错误</button>
+                                    </div>
                                     <textarea class="form-control" id="problemDescription" rows="3" placeholder="请输入审核意见..."></textarea>
                                 </div>
                                 
@@ -1084,11 +1103,24 @@
             document.getElementById('statusFilter').addEventListener('change', loadVideos);
             document.getElementById('stageFilter').addEventListener('change', loadVideos);
             document.getElementById('reviewerFilter').addEventListener('change', loadVideos);
+            document.getElementById('artworkPersonFilter').addEventListener('change', loadVideos);
             document.getElementById('brandFilter').addEventListener('change', loadVideos);
-            document.getElementById('provideDateFilter').addEventListener('change', loadVideos);
+            document.getElementById('provideDateStart').addEventListener('change', loadVideos);
+            document.getElementById('provideDateEnd').addEventListener('change', loadVideos);
+            document.getElementById('selectionDateStart').addEventListener('change', loadVideos);
+            document.getElementById('selectionDateEnd').addEventListener('change', loadVideos);
             document.getElementById('productIdFilter').addEventListener('input', loadVideos);
             document.getElementById('annotationStatusFilter').addEventListener('change', loadVideos);
             document.getElementById('uedStatusFilter').addEventListener('change', loadVideos);
+            
+            // 行内勾选变化 → 更新表头全选状态（仅绑定一次）
+            const tbody = document.getElementById('videosTable');
+            tbody.addEventListener('change', function(e) {
+                const target = e.target;
+                if (target && target.matches('input[type="checkbox"]')) {
+                    updateSelectAllState();
+                }
+            });
             
             // 绑定审核状态变化事件
             document.querySelectorAll('input[name="reviewStatus"]').forEach(radio => {
@@ -1127,8 +1159,12 @@
                 const status = document.getElementById('statusFilter').value;
                 const stage = document.getElementById('stageFilter').value;
                 const reviewer = document.getElementById('reviewerFilter').value;
+                const artworkPerson = document.getElementById('artworkPersonFilter').value;
                 const brand = document.getElementById('brandFilter').value;
-                const provideDate = document.getElementById('provideDateFilter').value;
+                const provideDateStart = document.getElementById('provideDateStart').value;
+                const provideDateEnd = document.getElementById('provideDateEnd').value;
+                const selectionDateStart = document.getElementById('selectionDateStart').value;
+                const selectionDateEnd = document.getElementById('selectionDateEnd').value;
                 const productId = document.getElementById('productIdFilter').value;
                 const annotationStatus = document.getElementById('annotationStatusFilter').value;
                 const uedStatus = document.getElementById('uedStatusFilter').value;
@@ -1138,8 +1174,12 @@
                 if (status) params.append('status', status);
                 if (stage) params.append('stage', stage);
                 if (reviewer) params.append('reviewer', reviewer);
+                if (artworkPerson) params.append('artworkPerson', artworkPerson);
                 if (brand) params.append('brand', brand);
-                if (provideDate) params.append('provideDate', provideDate);
+                if (provideDateStart) params.append('provideDateStart', provideDateStart);
+                if (provideDateEnd) params.append('provideDateEnd', provideDateEnd);
+                if (selectionDateStart) params.append('selectionDateStart', selectionDateStart);
+                if (selectionDateEnd) params.append('selectionDateEnd', selectionDateEnd);
                 if (productId) params.append('productId', productId);
                 if (annotationStatus) params.append('annotationStatus', annotationStatus);
                 if (uedStatus) params.append('uedStatus', uedStatus);
@@ -1162,8 +1202,12 @@
             document.getElementById('statusFilter').value = '';
             document.getElementById('stageFilter').value = '';
             document.getElementById('reviewerFilter').value = '';
+            document.getElementById('artworkPersonFilter').value = '';
             document.getElementById('brandFilter').value = '';
-            document.getElementById('provideDateFilter').value = '';
+            document.getElementById('provideDateStart').value = '';
+            document.getElementById('provideDateEnd').value = '';
+            document.getElementById('selectionDateStart').value = '';
+            document.getElementById('selectionDateEnd').value = '';
             document.getElementById('productIdFilter').value = '';
             document.getElementById('annotationStatusFilter').value = '';
             document.getElementById('uedStatusFilter').value = '';
@@ -1197,6 +1241,9 @@
                 
                 tbody.appendChild(row);
             });
+
+            // 渲染完成后，更新表头全选勾选与不确定态
+            updateSelectAllState();
         }
 
         function renderTableHeader() {
@@ -1500,7 +1547,14 @@
                 
                 return `<div class="screenshots-container">${screenshots.join('')}</div>`;
             } else {
-                return '<div class="text-muted">无截图</div>';
+                const mockUrl = 'https://h2.appsimg.com/a.appsimg.com/upload/merchandise/pdcvis/653204/2024/1217/143/72691ebc-ece8-4215-a3d1-d19fae624d89.jpg';
+                return `
+                    <div class="screenshots-container">
+                        <div class="screenshot-thumbnail" onclick="showScreenshotModal('${mockUrl}', '标注审核截图 1')">
+                            <img src="${mockUrl}" alt="标注审核截图" class="thumbnail-img">
+                        </div>
+                    </div>
+                `;
             }
         }
 
@@ -1843,6 +1897,30 @@
                 checkbox.checked = false;
             });
             document.getElementById('selectAllCheckbox').checked = false;
+        }
+
+        // 全选/取消全选
+        function toggleSelectAll() {
+            const header = document.getElementById('selectAllCheckbox');
+            const checked = !!(header && header.checked);
+            const boxes = document.querySelectorAll('tbody input[type="checkbox"]');
+            boxes.forEach(b => { b.checked = checked; });
+            updateSelectAllState();
+        }
+
+        // 根据行勾选情况同步表头全选复选框状态
+        function updateSelectAllState() {
+            const header = document.getElementById('selectAllCheckbox');
+            if (!header) return;
+            const boxes = Array.from(document.querySelectorAll('tbody input[type="checkbox"]'));
+            if (boxes.length === 0) {
+                header.checked = false;
+                header.indeterminate = false;
+                return;
+            }
+            const checkedCount = boxes.filter(b => b.checked).length;
+            header.checked = checkedCount === boxes.length;
+            header.indeterminate = checkedCount > 0 && checkedCount < boxes.length;
         }
 
         // 上传加艺术字视频
@@ -2251,9 +2329,13 @@
                 
                 // 逐个下载视频
                 for (let i = 0; i < downloadUrls.length; i++) {
+                    const video = currentVideos.find(v => v.id === selectedVideoIds[i]);
+                    const materialName = video && video.material_name_vip ? video.material_name_vip : `video_${selectedVideoIds[i]}`;
+                    const safeName = sanitizeFilename(materialName);
+                    const ext = getExtensionFromUrl(downloadUrls[i]) || 'mp4';
                     const link = document.createElement('a');
                     link.href = downloadUrls[i];
-                    link.download = `video_${selectedVideoIds[i]}_${i + 1}.mp4`;
+                    link.download = `${safeName}.${ext}`;
                     link.style.display = 'none';
                     document.body.appendChild(link);
                     link.click();
@@ -2271,6 +2353,105 @@
                 console.error('批量下载失败:', error);
                 showAlert('批量下载失败，请重试', 'danger');
             }
+        }
+
+        // 批量上传艺术字
+        function batchUploadArtwork() {
+            const selectedVideos = getSelectedVideos();
+            if (selectedVideos.length === 0) {
+                showAlert('请先在列表中勾选要上传的素材', 'warning');
+                return;
+            }
+            const input = document.getElementById('batchArtworkFileInput');
+            input.value = '';
+            input.onchange = async () => {
+                const files = Array.from(input.files || []);
+                if (files.length === 0) return;
+                showAlert(`开始上传 ${files.length} 个文件，请稍候...`, 'info');
+
+                // 预构建选中素材映射：前缀匹配依据为素材名称（material_name_vip）
+                const selectedVideoObjs = selectedVideos
+                    .map(id => currentVideos.find(v => v.id === id))
+                    .filter(Boolean);
+
+                // 归一化函数
+                const normalize = (s) => (s || '')
+                    .toString()
+                    .trim()
+                    .replace(/\s+/g, '')
+                    .toLowerCase();
+
+                const results = { success: 0, failed: 0, unmatched: [] };
+
+                for (const file of files) {
+                    const nameNoExt = file.name.replace(/\.[^.]+$/, '');
+                    const normFile = normalize(nameNoExt);
+
+                    // 在选中素材中寻找前缀匹配：文件名前缀以素材名称为前缀
+                    let matched = null;
+                    for (const v of selectedVideoObjs) {
+                        const normMaterial = normalize(v.material_name_vip || '');
+                        if (normMaterial && (normFile.startsWith(normMaterial) || normMaterial.startsWith(normFile))) {
+                            matched = v;
+                            break;
+                        }
+                    }
+
+                    if (!matched) {
+                        results.unmatched.push(file.name);
+                        continue;
+                    }
+
+                    try {
+                        const formData = new FormData();
+                        formData.append('videoId', matched.id);
+                        formData.append('videoFile', file);
+
+                        const resp = await fetch('/api/upload-artwork-video', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        if (resp.ok) {
+                            results.success += 1;
+                        } else {
+                            results.failed += 1;
+                        }
+                    } catch (e) {
+                        results.failed += 1;
+                    }
+                }
+
+                let msg = `上传完成：成功 ${results.success}，失败 ${results.failed}`;
+                if (results.unmatched.length > 0) {
+                    msg += `；未匹配文件 ${results.unmatched.length} 个（例如：${results.unmatched.slice(0, 3).join(', ')}）`;
+                }
+                showAlert(msg, results.failed === 0 && results.unmatched.length === 0 ? 'success' : 'warning');
+                loadVideos();
+            };
+            input.click();
+        }
+
+        // 根据URL推断扩展名
+        function getExtensionFromUrl(url) {
+            try {
+                const u = new URL(url, window.location.origin);
+                const pathname = u.pathname || '';
+                const m = pathname.match(/\.([a-zA-Z0-9]+)$/);
+                return m ? m[1] : null;
+            } catch (e) {
+                const m = (url || '').match(/\.([a-zA-Z0-9]+)(?:\?|#|$)/);
+                return m ? m[1] : null;
+            }
+        }
+
+        // 安全文件名
+        function sanitizeFilename(name) {
+            return (name || '')
+                .toString()
+                .replace(/[\\\/:*?"<>|]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .slice(0, 120);
         }
 
         // 完成艺术字
@@ -2487,7 +2668,7 @@
         let columnSettings = {
             available: [
                 { id: 'checkbox', name: '勾选框', required: true },
-                { id: 'material', name: '素材信息', required: true },
+                { id: 'material', name: '素材名称', required: true },
                 { id: 'original', name: '原始生产视频', required: true },
                 { id: 'artwork', name: '加艺术字视频', required: true },
                 { id: 'selection', name: '选品日期', required: false },
@@ -2611,6 +2792,15 @@
             } else {
                 console.log('使用默认列设置:', columnSettings.selected);
             }
+        }
+
+        // 预置审核意见插入
+        function addPresetComment(text) {
+            const textarea = document.getElementById('problemDescription');
+            if (!textarea) return;
+            const current = textarea.value.trim();
+            textarea.value = current ? (current + '；' + text) : text;
+            textarea.dispatchEvent(new Event('input', { bubbles: true }));
         }
     </script>
 </body>
