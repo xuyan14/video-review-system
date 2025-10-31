@@ -3,35 +3,3031 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>实拍视频审核管理系统 - 前端静态页</title>
+    <title>视频审核管理系统</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { padding: 40px; }
-        .note { max-width: 960px; margin: 0 auto; }
-        code { background: #f6f8fa; padding: 2px 6px; border-radius: 4px; }
+        body {
+            background-color: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .main-container {
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .filter-panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .content-panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stats-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stats-card h3 {
+            color: #1f2937;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .stats-card p {
+            color: #6b7280;
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        .form-control, .form-select {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .btn {
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+        }
+        
+        .btn-primary {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2563eb;
+            border-color: #2563eb;
+        }
+        
+        .btn-outline-primary {
+            color: #3b82f6;
+            border-color: #3b82f6;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+        }
+        
+        .btn-secondary {
+            background-color: #6b7280;
+            border-color: #6b7280;
+        }
+        
+        .btn-success {
+            background-color: #10b981;
+            border-color: #10b981;
+        }
+        
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+        
+        .table {
+            margin-bottom: 0;
+        }
+        
+        .table th {
+            background-color: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            color: #374151;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 12px 16px;
+        }
+        
+        .table td {
+            border-bottom: 1px solid #f3f4f6;
+            padding: 12px 16px;
+            vertical-align: middle;
+        }
+        
+        .table tbody tr:hover {
+            background-color: #f9fafb;
+        }
+        
+        .status-badge {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .badge.bg-success {
+            background-color: #10b981 !important;
+        }
+        
+        .badge.bg-warning {
+            background-color: #f59e0b !important;
+        }
+        
+        .badge.bg-primary {
+            background-color: #3b82f6 !important;
+        }
+        
+        .stage-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .stage-step {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            background-color: #f3f4f6;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .stage-step.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .stage-step.completed {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 0;
+        }
+        
+        .navbar-brand {
+            color: #1f2937 !important;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .table-responsive {
+            border-radius: 8px;
+            overflow-x: auto;
+            overflow-y: visible;
+            min-width: 100%;
+        }
+        
+        .table {
+            min-width: 2400px;
+            table-layout: fixed;
+        }
+        
+        .table th,
+        .table td {
+            padding: 12px 8px;
+            vertical-align: middle;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            border-bottom: 2px solid #dee2e6;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .video-info {
+            font-size: 14px;
+            line-height: 1.4;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+        
+        .highlight-stage {
+            /* 移除容器高亮，只保留按钮高亮 */
+        }
+        
+        .highlight-stage .btn {
+            background-color: #ef4444 !important; /* 更醒目的红色 */
+            border-color: #dc2626 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25), 0 6px 14px rgba(239, 68, 68, 0.35) !important;
+            transform: translateZ(0);
+        }
+        
+        .highlight-stage .btn:hover {
+            background-color: #dc2626 !important; /* 深红 */
+            border-color: #b91c1c !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.35), 0 10px 18px rgba(239, 68, 68, 0.45) !important;
+        }
+        
+        /* 给红色按钮一个轻微的呼吸动画，进一步强调 */
+        .highlight-stage .btn {
+            animation: highlightPulse 1.6s ease-in-out infinite;
+        }
+        @keyframes highlightPulse {
+            0%, 100% { box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25), 0 6px 14px rgba(239, 68, 68, 0.35); }
+            50% { box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.35), 0 10px 20px rgba(239, 68, 68, 0.5); }
+        }
+        
+        .screenshot-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px;
+            background-color: #f9fafb;
+        }
+        
+        .screenshot-image {
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .screenshot-container {
+            position: relative;
+        }
+        
+        .form-control-plaintext {
+            padding: 0.375rem 0;
+            margin-bottom: 0;
+            line-height: 1.5;
+            color: #212529;
+            background-color: transparent;
+            border: solid transparent;
+            border-width: 1px 0;
+            font-weight: 500;
+        }
+        
+        .reviewer-display {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .comment-text {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+        
+        .screenshot-count {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+        
+        .screenshot-count i {
+            color: #28a745;
+        }
+        
+        .screenshots-container {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        
+        .screenshot-thumbnail {
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+        
+        .screenshot-thumbnail:hover {
+            transform: scale(1.05);
+            border-color: #007bff;
+        }
+        
+        .thumbnail-img {
+            width: 40px;
+            height: 30px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .stage-indicator-simple {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .stage-pending {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .stage-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .stage-failed {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .stage-default {
+            background-color: #e2e3e5;
+            color: #383d41;
+            border: 1px solid #d6d8db;
+        }
+        
+        /* 列设置样式 */
+        .column-list {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            min-height: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .column-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin: 4px 0;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .column-item:hover {
+            background-color: #f8f9fa;
+            border-color: #007bff;
+        }
+        
+        .column-item.selected {
+            background-color: #e7f3ff;
+            border-color: #007bff;
+        }
+        
+        .column-checkbox {
+            margin-right: 8px;
+        }
+        
+        .column-name {
+            flex: 1;
+            font-size: 14px;
+        }
+        
+        .column-drag-handle {
+            color: #6c757d;
+            cursor: move;
+            margin-left: 8px;
+        }
+        
+        .stage-indicator-horizontal {
+            display: flex;
+            align-items: center;
+            gap: 1px;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+        }
+        
+        .stage-step-horizontal {
+            font-size: 9px;
+            padding: 1px 3px;
+            border-radius: 6px;
+            white-space: nowrap;
+            background-color: #f3f4f6;
+            color: #6b7280;
+            border: 1px solid #e5e7eb;
+            flex: 1;
+            text-align: center;
+            min-width: 0;
+        }
+        
+        .stage-step-horizontal.active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+            font-weight: 600;
+        }
+        
+        .stage-step-horizontal.completed {
+            background-color: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        
+        .stage-arrow {
+            color: #9ca3af;
+            font-size: 8px;
+            margin: 0 1px;
+            flex-shrink: 0;
+        }
+        
+        .product-info {
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: normal;
+        }
+        
+        .category-info {
+            font-size: 13px;
+            line-height: 1.3;
+            white-space: normal;
+        }
+        
+        .brand-info {
+            font-size: 13px;
+            line-height: 1.3;
+            color: #1f2937;
+        }
+        
+        .material-info-hover {
+            font-size: 13px;
+            color: #1f2937;
+            cursor: help;
+            white-space: normal;
+            word-wrap: break-word;
+            max-width: 100%;
+        }
+        
+        .selling-points-hover {
+            font-size: 12px;
+            color: #1f2937;
+            cursor: help;
+            white-space: normal;
+            word-wrap: break-word;
+            max-width: 100%;
+            line-height: 1.3;
+        }
+        
+        .video-info strong {
+            color: #1f2937;
+            font-weight: 600;
+        }
+        
+        .video-info .text-muted {
+            color: #6b7280;
+            font-size: 12px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px; /* 栅格间距 */
+            margin-bottom: 16px;
+            align-items: end;
+        }
+        
+        .filter-row > div { min-width: 0; }
+        
+        .filter-actions {
+            grid-column: 1 / -1; /* 跨越整行 */
+            display: flex;
+            justify-content: flex-end; /* 右对齐到筛选区内部的右侧 */
+            align-items: center;
+            gap: 10px;
+            margin-top: 4px;
+        }
+        
+        .filter-actions .btn {
+            height: 32px;
+            padding: 4px 8px;
+            font-size: 12px;
+            line-height: 1.2;
+            min-width: 100px;
+        }
+
+        /* 强化筛选区按钮区域的布局优先级，确保样式生效 */
+        .filter-panel .filter-actions { width: 100% !important; }
+
+        /* 预置审核意见样式 */
+        .preset-comments {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+        .preset-comments .btn {
+            padding: 2px 8px;
+            font-size: 12px;
+        }
+        
+        .filter-row:last-of-type {
+            margin-bottom: 0;
+        }
+        
+        .form-select {
+            font-size: 12px;
+            padding: 4px 6px;
+        }
+        
+        .form-control {
+            font-size: 12px;
+            padding: 4px 6px;
+        }
+        
+        .form-label {
+            font-size: 11px;
+            margin-bottom: 2px;
+            font-weight: 500;
+        }
+        
+        .filter-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .content-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+        
+        .content-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        video {
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-preview-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        
+        .product-info {
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        .product-link {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .product-link:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+        
+        .date-info {
+            font-size: 13px;
+            color: #6b7280;
+        }
+        
+        .material-info-hover {
+            font-size: 13px;
+            color: #1f2937;
+            cursor: help;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+        
+        .material-info-hover:hover {
+            color: #3b82f6;
+        }
+        
+        .selling-points-hover {
+            font-size: 12px;
+            color: #1f2937;
+            cursor: help;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            line-height: 1.3;
+        }
+        
+        .selling-points-hover:hover {
+            color: #3b82f6;
+        }
+        
+        .status-select {
+            min-width: 100px;
+        }
+        
+        .status-select .form-select-sm {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #d1d5db;
+            background-color: white;
+        }
+        
+        .status-select .form-select-sm:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        }
+        
+        .status-select .form-select-sm option {
+            padding: 4px 8px;
+        }
     </style>
 </head>
 <body>
-<div class="note">
-    <h1 class="h4 mb-3">实拍视频审核管理系统</h1>
-    <p class="text-muted">本页面用于 GitHub Pages 展示与引导。前端真实页面位于项目的 <code>templates/index.html</code>，需要配合本地后端服务使用。</p>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-video me-2"></i>视频审核管理系统
+            </a>
+            <div class="navbar-nav ms-auto">
+                <button class="btn btn-primary" onclick="loadVideos()">
+                    <i class="fas fa-refresh me-1"></i>刷新数据
+                </button>
+            </div>
+        </div>
+    </nav>
 
-    <h2 class="h5 mt-4">快速开始</h2>
-    <ol>
-        <li>在本机启动后端服务（建议端口 <strong>3001</strong>）：<br>
-            <code>PORT=3001 python3 start_simple.py</code>
-        </li>
-        <li>打开本地页面：<a href="http://localhost:3001/" target="_blank">http://localhost:3001/</a></li>
-    </ol>
+    <div class="container-fluid px-4 py-4">
+        
 
-    <h2 class="h5 mt-4">从 GitHub Pages 连接本地后端（可选）</h2>
-    <p>若需在 GitHub Pages 上直接打开前端并连到本地后端，请确保浏览器允许从 HTTPS 页面访问 <code>http://localhost</code>，并且服务已开启 CORS（代码已内置简单 CORS 头）。</p>
-    <p>示例直达前端（实验特性，取决于浏览器策略）：<br>
-        <a class="btn btn-primary btn-sm" href="../templates/index.html" target="_blank">打开前端模版页</a>
-    </p>
+        <!-- 筛选面板 -->
+        <div class="filter-panel">
+            <div class="filter-row">
+                <div>
+                    <label class="form-label">完成状态</label>
+                    <select class="form-select" id="statusFilter">
+                        <option value="">全部状态</option>
+                        <option value="未上传">未上传</option>
+                        <option value="已上传">已上传</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">当前阶段</label>
+                    <select class="form-select" id="stageFilter">
+                        <option value="">全部阶段</option>
+                        <option value="production">视频生产</option>
+                        <option value="annotation_review">标注审核</option>
+                        <option value="ued_review">UED审核</option>
+                        <option value="artwork">加艺术字</option>
+                        <option value="completed">已完成</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">审核员</label>
+                    <select class="form-select" id="reviewerFilter">
+                        <option value="">全部审核员</option>
+                        <option value="王嘉欣">王嘉欣</option>
+                        <option value="王量">王量</option>
+                        <option value="豆玉欣">豆玉欣</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">加艺术字人员</label>
+                    <select class="form-select" id="artworkPersonFilter">
+                        <option value="">全部人员</option>
+                        <option value="王嘉欣">王嘉欣</option>
+                        <option value="王量">王量</option>
+                        <option value="豆玉欣">豆玉欣</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">品牌名称</label>
+                    <select class="form-select" id="brandFilter">
+                        <option value="">全部品牌</option>
+                        <option value="芙丽芳丝">芙丽芳丝</option>
+                        <option value="安踏">安踏</option>
+                        <option value="增致牛仔">增致牛仔</option>
+                        <option value="富铤">富铤</option>
+                        <option value="雪中飞">雪中飞</option>
+                        <option value="秋水伊人">秋水伊人</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">提供日期（起）</label>
+                    <input type="date" class="form-control" id="provideDateStart">
+                </div>
+                <div>
+                    <label class="form-label">提供日期（止）</label>
+                    <input type="date" class="form-control" id="provideDateEnd">
+                </div>
+                <div>
+                    <label class="form-label">选品日期（起）</label>
+                    <input type="date" class="form-control" id="selectionDateStart">
+                </div>
+                <div>
+                    <label class="form-label">选品日期（止）</label>
+                    <input type="date" class="form-control" id="selectionDateEnd">
+                </div>
+                <div>
+                    <label class="form-label">商品ID</label>
+                    <input type="text" class="form-control" id="productIdFilter" placeholder="输入商品ID">
+                </div>
+                <div>
+                    <label class="form-label">标注验收状态</label>
+                    <select class="form-select" id="annotationStatusFilter">
+                        <option value="">全部状态</option>
+                        <option value="可用">可用</option>
+                        <option value="不可用">不可用</option>
+                        <option value="未审核">未审核</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">UED验收状态</label>
+                    <select class="form-select" id="uedStatusFilter">
+                        <option value="">全部状态</option>
+                        <option value="可用">可用</option>
+                        <option value="不可用">不可用</option>
+                        <option value="未审核">未审核</option>
+                    </select>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn btn-secondary" onclick="resetFilters()">
+                        <i class="fas fa-undo me-1"></i>重置
+                    </button>
+                    <button class="btn btn-primary" onclick="loadVideos()">
+                        <i class="fas fa-search me-1"></i>查询
+                    </button>
+                </div>
+            </div>
+        </div>
 
-    <p class="mt-4 text-muted">仓库源码已更新至最新改动，包括筛选区布局、批量上传与命名、预置审核意见、示例截图等功能。</p>
-</div>
+        <!-- 视频列表 -->
+        <div class="content-panel">
+            <div class="content-header">
+                <h5 class="content-title">视频列表 (共 <span id="videoCount">0</span> 个视频)</h5>
+            <div class="content-actions">
+                <button class="btn btn-primary btn-sm" onclick="showBatchAssignModal()">
+                    <i class="fas fa-users me-1"></i>批量分配
+                </button>
+                <button class="btn btn-success btn-sm" onclick="batchDownloadVideos()">
+                    <i class="fas fa-download me-1"></i>批量下载
+                </button>
+                <button class="btn btn-outline-success btn-sm" onclick="batchUploadArtwork()">
+                    <i class="fas fa-upload me-1"></i>批量上传艺术字
+                </button>
+                <button class="btn btn-outline-secondary btn-sm" onclick="showColumnSettings()">
+                    <i class="fas fa-columns me-1"></i>列设置
+                </button>
+                <button class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-download me-1"></i>导出
+                </button>
+            </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <!-- 表头将在这里动态生成 -->
+                        </tr>
+                    </thead>
+                    <tbody id="videosTable">
+                        <!-- 视频数据将在这里动态加载 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 批量上传隐藏文件选择器 -->
+    <input type="file" id="batchArtworkFileInput" accept="video/*" multiple style="display:none" />
+
+
+    <!-- 视频详情模态框 -->
+    <div class="modal fade" id="videoDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">视频详情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="videoDetailContent">
+                    <!-- 视频详情内容将在这里动态加载 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 批量分配模态框 -->
+    <div class="modal fade" id="batchAssignModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">批量分配审核员</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">选择审核员</label>
+                        <select class="form-select" id="batchReviewerSelect">
+                            <option value="">请选择审核员</option>
+                            <option value="王嘉欣">王嘉欣</option>
+                            <option value="王量">王量</option>
+                            <option value="豆玉欣">豆玉欣</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">选择加艺术字人员</label>
+                        <select class="form-select" id="batchArtworkSelect">
+                            <option value="">请选择加艺术字人员</option>
+                            <option value="王嘉欣">王嘉欣</option>
+                            <option value="王量">王量</option>
+                            <option value="豆玉欣">豆玉欣</option>
+                        </select>
+                    </div>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        已选择 <span id="selectedCount">0</span> 个视频进行批量分配
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="batchAssignReviewer()">确认分配</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 审核页面模态框 -->
+    <div class="modal fade" id="reviewModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reviewModalTitle">视频审核</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="video-container">
+                                <video id="reviewVideo" controls style="width: 100%; max-height: 500px;">
+                                    <source id="videoSource" src="" type="video/mp4">
+                                    您的浏览器不支持视频播放。
+                                </video>
+                                <div class="mt-2">
+                                    <button class="btn btn-outline-secondary btn-sm" onclick="captureFrame()">
+                                        <i class="fas fa-camera"></i> 截帧
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="review-info">
+                                <h6>视频信息</h6>
+                                <div id="reviewVideoInfo">
+                                    <!-- 视频信息将在这里显示 -->
+                                </div>
+                                
+                                <h6 class="mt-3">审核操作</h6>
+                                <div class="mb-3" id="reviewerSection">
+                                    <label class="form-label">审核员</label>
+                                    <div class="form-control-plaintext" id="currentReviewer">
+                                        <!-- 当前审核员将在这里显示 -->
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">审核结果</label>
+                                    <select class="form-select" id="reviewStatusSelect">
+                                        <option value="可用">可用</option>
+                                        <option value="不可用">不可用</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">审核意见</label>
+                                    <div class="preset-comments">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addPresetComment('断音断读')">断音断读</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addPresetComment('画面卡顿')">画面卡顿</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addPresetComment('价格信息错误')">价格信息错误</button>
+                                    </div>
+                                    <textarea class="form-control" id="problemDescription" rows="3" placeholder="请输入审核意见..."></textarea>
+                                </div>
+                                
+                                <!-- 截图区域 -->
+                                <div id="screenshotsContainer">
+                                    <h6>截图</h6>
+                                    <div id="screenshotsList">
+                                        <!-- 截图将在这里显示 -->
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-primary mt-3" onclick="submitReview()">提交审核</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 上传视频模态框 -->
+    <div class="modal fade" id="uploadModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadModalTitle">上传加艺术字视频</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <input type="hidden" id="uploadVideoId" name="videoId">
+                        
+                        <div class="mb-3">
+                            <label class="form-label">选择视频文件</label>
+                            <input type="file" class="form-control" id="videoFile" name="videoFile" accept="video/*" onchange="previewVideo(this)">
+                            <div class="form-text">支持 MP4、AVI、MOV 等视频格式，文件大小不超过 100MB</div>
+                        </div>
+                        
+                        <div class="mb-3" id="videoPreviewContainer" style="display: none;">
+                            <label class="form-label">视频预览</label>
+                            <video id="uploadPreview" controls style="width: 100%; max-height: 300px;">
+                                您的浏览器不支持视频播放。
+                            </video>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="submitUpload()">上传视频</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <!-- 截图放大模态框 -->
+    <div class="modal fade" id="screenshotModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="screenshotModalTitle">截图详情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="screenshotImage" src="" alt="截图" class="img-fluid" style="max-height: 600px;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <!-- 生产详情模态框 -->
+    <div class="modal fade" id="productionDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">生产详情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <pre id="productionDetailsContent" class="bg-light p-3 rounded" style="white-space: pre-wrap; font-family: 'Courier New', monospace; font-size: 14px; max-height: 500px; overflow-y: auto;"></pre>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 列设置模态框 -->
+    <div class="modal fade" id="columnSettingsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">列显示设置</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>可选列</h6>
+                            <div id="availableColumns" class="column-list">
+                                <!-- 可选列将在这里动态生成 -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>已选列</h6>
+                            <div id="selectedColumns" class="column-list">
+                                <!-- 已选列将在这里动态生成 -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-sm btn-outline-primary" onclick="selectAllColumns()">全选</button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="deselectAllColumns()">全不选</button>
+                        <button class="btn btn-sm btn-outline-info" onclick="resetToDefaultColumns()">恢复默认</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="applyColumnSettings()">应用设置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ============ MOCK DATA ============
+        const MOCK_SCREENSHOT_URL = 'https://h2.appsimg.com/a.appsimg.com/upload/merchandise/pdcvis/653204/2024/1217/143/72691ebc-ece8-4215-a3d1-d19fae624d89.jpg';
+        
+        // Mock 视频数据
+        const MOCK_VIDEOS = [
+            {
+                id: '1',
+                material_name_vip: '芙丽芳丝净润洗面霜',
+                material_name_full: '芙丽芳丝净润洗面霜-温和洁面',
+                video_url: 'https://example.com/video1.mp4',
+                artwork_video_url: '',
+                video_provide_date: '2024-12-15',
+                video_selection_date: '2024-12-10',
+                brand_name: '芙丽芳丝',
+                category_level1: '美妆',
+                category_level2: '护肤',
+                category_level3: '洁面',
+                product_id: '123456789',
+                product_url: 'https://example.com/product/123456789',
+                material_price: 99,
+                material_selling_points: '[["温和","不含香精"],["保湿","滋润肌肤"],["适合敏感肌","温和配方"]]',
+                current_stage: 'annotation_review',
+                completion_status: '未上传',
+                annotation_reviewer: '王嘉欣',
+                ued_reviewer: null,
+                artwork_person: null,
+                annotation_status: '未审核',
+                ued_status: null,
+                annotation_screenshots: [{ screenshot_path: MOCK_SCREENSHOT_URL }],
+                ued_screenshots: []
+            },
+            {
+                id: '2',
+                material_name_vip: '安踏运动鞋',
+                material_name_full: '安踏运动鞋-舒适跑步鞋',
+                video_url: 'https://example.com/video2.mp4',
+                artwork_video_url: 'https://example.com/artwork2.mp4',
+                video_provide_date: '2024-12-16',
+                video_selection_date: '2024-12-11',
+                brand_name: '安踏',
+                category_level1: '服饰',
+                category_level2: '鞋靴',
+                category_level3: '运动鞋',
+                product_id: '987654321',
+                product_url: 'https://example.com/product/987654321',
+                material_price: 299,
+                material_selling_points: '[["透气","舒适透气"],["防滑","抓地力强"]]',
+                current_stage: 'ued_review',
+                completion_status: '未上传',
+                annotation_reviewer: '王量',
+                ued_reviewer: null,
+                artwork_person: '豆玉欣',
+                annotation_status: '可用',
+                ued_status: '未审核',
+                annotation_screenshots: [{ screenshot_path: MOCK_SCREENSHOT_URL }],
+                ued_screenshots: []
+            },
+            {
+                id: '3',
+                material_name_vip: '增致牛仔T恤',
+                material_name_full: '增致牛仔T恤-经典款',
+                video_url: 'https://example.com/video3.mp4',
+                artwork_video_url: '',
+                video_provide_date: '2024-12-17',
+                video_selection_date: '2024-12-12',
+                brand_name: '增致牛仔',
+                category_level1: '服饰',
+                category_level2: '上装',
+                category_level3: 'T恤',
+                product_id: '456789123',
+                product_url: 'https://example.com/product/456789123',
+                material_price: 79,
+                material_selling_points: '[["纯棉","舒适面料"],["百搭","经典款式"]]',
+                current_stage: 'production',
+                completion_status: '未上传',
+                annotation_reviewer: null,
+                ued_reviewer: null,
+                artwork_person: null,
+                annotation_status: null,
+                ued_status: null,
+                annotation_screenshots: [],
+                ued_screenshots: []
+            }
+        ];
+
+        // Mock API 函数
+        const mockAPI = {
+            async getProjects(params = {}) {
+                let videos = [...MOCK_VIDEOS];
+                // 简单的筛选逻辑
+                if (params.status) {
+                    videos = videos.filter(v => v.completion_status === params.status);
+                }
+                if (params.stage) {
+                    videos = videos.filter(v => v.current_stage === params.stage);
+                }
+                if (params.reviewer) {
+                    videos = videos.filter(v => 
+                        v.annotation_reviewer === params.reviewer || 
+                        v.ued_reviewer === params.reviewer || 
+                        v.artwork_person === params.reviewer
+                    );
+                }
+                if (params.artworkPerson) {
+                    videos = videos.filter(v => v.artwork_person === params.artworkPerson);
+                }
+                if (params.brand) {
+                    videos = videos.filter(v => v.brand_name === params.brand);
+                }
+                if (params.productId) {
+                    videos = videos.filter(v => v.product_id.includes(params.productId));
+                }
+                if (params.annotationStatus) {
+                    videos = videos.filter(v => {
+                        if (params.annotationStatus === '未审核') return !v.annotation_status;
+                        return v.annotation_status === params.annotationStatus;
+                    });
+                }
+                if (params.uedStatus) {
+                    videos = videos.filter(v => {
+                        if (params.uedStatus === '未审核') return !v.ued_status;
+                        return v.ued_status === params.uedStatus;
+                    });
+                }
+                return { ok: true, json: async () => videos };
+            },
+            async getStatistics() {
+                return {
+                    ok: true,
+                    json: async () => ({
+                        total: MOCK_VIDEOS.length,
+                        completed: 0,
+                        pending: MOCK_VIDEOS.length,
+                        annotation_pending: 1,
+                        ued_pending: 1,
+                        artwork_pending: 0
+                    })
+                };
+            },
+            async toggleStatus(data) {
+                const video = MOCK_VIDEOS.find(v => v.id === data.videoId);
+                if (video) {
+                    if (data.type === 'annotation') {
+                        video.annotation_status = data.status;
+                        video.annotation_reviewer = data.reviewer || video.annotation_reviewer;
+                        if (data.status === '可用') {
+                            video.current_stage = 'ued_review';
+                        }
+                    } else if (data.type === 'ued') {
+                        video.ued_status = data.status;
+                        video.ued_reviewer = data.reviewer || video.ued_reviewer;
+                    }
+                }
+                return { ok: true, json: async () => ({ message: '状态已更新' }) };
+            },
+            async updateReviewer(data) {
+                const video = MOCK_VIDEOS.find(v => v.id === data.videoId);
+                if (video) {
+                    video.annotation_reviewer = data.reviewer;
+                }
+                return { ok: true, json: async () => ({ message: '审核员已更新' }) };
+            },
+            async updateArtworkPerson(data) {
+                const video = MOCK_VIDEOS.find(v => v.id === data.videoId);
+                if (video) {
+                    video.artwork_person = data.artworkPerson;
+                }
+                return { ok: true, json: async () => ({ message: '加艺术字人员已更新' }) };
+            },
+            async uploadArtworkVideo(formData) {
+                const videoId = formData.get('videoId');
+                const video = MOCK_VIDEOS.find(v => v.id === videoId);
+                if (video) {
+                    video.artwork_video_url = 'https://example.com/uploaded/' + Date.now() + '.mp4';
+                    video.current_stage = 'ued_review';
+                }
+                return { ok: true, json: async () => ({ message: '视频上传成功', video_url: video.artwork_video_url }) };
+            },
+            async saveScreenshot(formData) {
+                return { ok: true, json: async () => ({ message: '截图保存成功' }) };
+            },
+            async getProject(id) {
+                const video = MOCK_VIDEOS.find(v => v.id === id);
+                return { ok: true, json: async () => video };
+            },
+            async getProjectReviews(id) {
+                return { ok: true, json: async () => [] };
+            }
+        };
+
+        // 拦截 fetch 调用
+        const originalFetch = window.fetch;
+        window.fetch = async function(url, options = {}) {
+            const urlObj = new URL(url, window.location.origin);
+            const path = urlObj.pathname;
+            
+            // 拦截 API 调用
+            if (path === '/api/projects' || path.startsWith('/api/projects/')) {
+                if (path === '/api/projects') {
+                    const params = {};
+                    urlObj.searchParams.forEach((v, k) => params[k] = v);
+                    return mockAPI.getProjects(params);
+                } else if (path.endsWith('/reviews')) {
+                    const id = path.split('/')[3];
+                    return mockAPI.getProjectReviews(id);
+                } else {
+                    const id = path.split('/')[3];
+                    return mockAPI.getProject(id);
+                }
+            } else if (path === '/api/statistics') {
+                return mockAPI.getStatistics();
+            } else if (path === '/api/toggle-status') {
+                return mockAPI.toggleStatus(JSON.parse(options.body || '{}'));
+            } else if (path === '/api/update-reviewer') {
+                return mockAPI.updateReviewer(JSON.parse(options.body || '{}'));
+            } else if (path === '/api/update-artwork-person') {
+                return mockAPI.updateArtworkPerson(JSON.parse(options.body || '{}'));
+            } else if (path === '/api/upload-artwork-video') {
+                return mockAPI.uploadArtworkVideo(options.body || new FormData());
+            } else if (path === '/api/save-screenshot') {
+                return mockAPI.saveScreenshot(options.body || new FormData());
+            }
+            
+            // 其他请求使用原始 fetch
+            return originalFetch.apply(this, arguments);
+        };
+
+        // 全局变量
+        let currentVideos = [];
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadColumnSettings(); // 加载列设置
+            loadVideos();
+            
+            // 绑定筛选器事件
+            document.getElementById('statusFilter').addEventListener('change', loadVideos);
+            document.getElementById('stageFilter').addEventListener('change', loadVideos);
+            document.getElementById('reviewerFilter').addEventListener('change', loadVideos);
+            document.getElementById('artworkPersonFilter').addEventListener('change', loadVideos);
+            document.getElementById('brandFilter').addEventListener('change', loadVideos);
+            document.getElementById('provideDateStart').addEventListener('change', loadVideos);
+            document.getElementById('provideDateEnd').addEventListener('change', loadVideos);
+            document.getElementById('selectionDateStart').addEventListener('change', loadVideos);
+            document.getElementById('selectionDateEnd').addEventListener('change', loadVideos);
+            document.getElementById('productIdFilter').addEventListener('input', loadVideos);
+            document.getElementById('annotationStatusFilter').addEventListener('change', loadVideos);
+            document.getElementById('uedStatusFilter').addEventListener('change', loadVideos);
+            
+            // 行内勾选变化 → 更新表头全选状态（仅绑定一次）
+            const tbody = document.getElementById('videosTable');
+            tbody.addEventListener('change', function(e) {
+                const target = e.target;
+                if (target && target.matches('input[type="checkbox"]')) {
+                    updateSelectAllState();
+                }
+            });
+            
+            // 绑定审核状态变化事件
+            document.querySelectorAll('input[name="reviewStatus"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const problemDiv = document.getElementById('problemDescriptionDiv');
+                    
+                    if (this.value === '不可用') {
+                        problemDiv.style.display = 'block';
+                    } else {
+                        problemDiv.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // 加载统计数据
+        async function loadStatistics() {
+            try {
+                const response = await fetch('/api/statistics');
+                const stats = await response.json();
+                
+                document.getElementById('totalVideos').textContent = stats.total || 0;
+                document.getElementById('completedVideos').textContent = stats.completed || 0;
+                document.getElementById('pendingVideos').textContent = stats.pending || 0;
+                document.getElementById('annotationPending').textContent = stats.annotation_pending || 0;
+                document.getElementById('uedPending').textContent = stats.ued_pending || 0;
+                document.getElementById('artworkPending').textContent = stats.artwork_pending || 0;
+            } catch (error) {
+                console.error('加载统计数据失败:', error);
+            }
+        }
+
+        // 加载视频列表
+        async function loadVideos() {
+            try {
+                const status = document.getElementById('statusFilter').value;
+                const stage = document.getElementById('stageFilter').value;
+                const reviewer = document.getElementById('reviewerFilter').value;
+                const artworkPerson = document.getElementById('artworkPersonFilter').value;
+                const brand = document.getElementById('brandFilter').value;
+                const provideDateStart = document.getElementById('provideDateStart').value;
+                const provideDateEnd = document.getElementById('provideDateEnd').value;
+                const selectionDateStart = document.getElementById('selectionDateStart').value;
+                const selectionDateEnd = document.getElementById('selectionDateEnd').value;
+                const productId = document.getElementById('productIdFilter').value;
+                const annotationStatus = document.getElementById('annotationStatusFilter').value;
+                const uedStatus = document.getElementById('uedStatusFilter').value;
+                
+                let url = '/api/projects?';
+                const params = new URLSearchParams();
+                if (status) params.append('status', status);
+                if (stage) params.append('stage', stage);
+                if (reviewer) params.append('reviewer', reviewer);
+                if (artworkPerson) params.append('artworkPerson', artworkPerson);
+                if (brand) params.append('brand', brand);
+                if (provideDateStart) params.append('provideDateStart', provideDateStart);
+                if (provideDateEnd) params.append('provideDateEnd', provideDateEnd);
+                if (selectionDateStart) params.append('selectionDateStart', selectionDateStart);
+                if (selectionDateEnd) params.append('selectionDateEnd', selectionDateEnd);
+                if (productId) params.append('productId', productId);
+                if (annotationStatus) params.append('annotationStatus', annotationStatus);
+                if (uedStatus) params.append('uedStatus', uedStatus);
+                
+                url += params.toString();
+                
+                const response = await fetch(url);
+                currentVideos = await response.json();
+                
+                document.getElementById('videoCount').textContent = currentVideos.length;
+                renderVideosTable();
+            } catch (error) {
+                console.error('加载视频列表失败:', error);
+                showAlert('加载视频列表失败', 'danger');
+            }
+        }
+
+        // 重置筛选器
+        function resetFilters() {
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('stageFilter').value = '';
+            document.getElementById('reviewerFilter').value = '';
+            document.getElementById('artworkPersonFilter').value = '';
+            document.getElementById('brandFilter').value = '';
+            document.getElementById('provideDateStart').value = '';
+            document.getElementById('provideDateEnd').value = '';
+            document.getElementById('selectionDateStart').value = '';
+            document.getElementById('selectionDateEnd').value = '';
+            document.getElementById('productIdFilter').value = '';
+            document.getElementById('annotationStatusFilter').value = '';
+            document.getElementById('uedStatusFilter').value = '';
+            loadVideos();
+        }
+
+        // 渲染视频表格
+        function renderVideosTable() {
+            // 先渲染表头
+            renderTableHeader();
+            
+            const tbody = document.getElementById('videosTable');
+            tbody.innerHTML = '';
+            
+            if (currentVideos.length === 0) {
+                const colspan = columnSettings.selected.length;
+                tbody.innerHTML = `<tr><td colspan="${colspan}" class="text-center">暂无数据</td></tr>`;
+                return;
+            }
+            
+            currentVideos.forEach(video => {
+                const row = document.createElement('tr');
+                row.dataset.videoId = video.id;
+                
+                // 根据选中的列动态生成表格内容
+                columnSettings.selected.forEach(columnId => {
+                    const cell = document.createElement('td');
+                    cell.innerHTML = getColumnContent(video, columnId);
+                    row.appendChild(cell);
+                });
+                
+                tbody.appendChild(row);
+            });
+
+            // 渲染完成后，更新表头全选勾选与不确定态
+            updateSelectAllState();
+        }
+
+        function renderTableHeader() {
+            const thead = document.querySelector('table thead tr');
+            thead.innerHTML = '';
+            
+            columnSettings.selected.forEach(columnId => {
+                const column = columnSettings.available.find(c => c.id === columnId);
+                if (column) {
+                    const th = document.createElement('th');
+                    th.style.width = getColumnWidth(columnId);
+                    th.style.minWidth = getColumnWidth(columnId);
+                    
+                    if (columnId === 'checkbox') {
+                        th.innerHTML = '<input type="checkbox" class="form-check-input" id="selectAllCheckbox" onchange="toggleSelectAll()">';
+                    } else {
+                        th.textContent = column.name;
+                    }
+                    
+                    thead.appendChild(th);
+                }
+            });
+        }
+
+        function getColumnContent(video, columnId) {
+            switch (columnId) {
+                case 'checkbox':
+                    return `<input type="checkbox" class="form-check-input" data-video-id="${video.id}">`;
+                case 'material':
+                    return `
+                        <div class="material-info-hover" title="${video.material_name_full || video.material_name_vip}">
+                            ${video.material_name_vip}
+                        </div>
+                    `;
+                case 'original':
+                    return getOriginalVideo(video);
+                case 'artwork':
+                    return getArtworkVideo(video);
+                case 'selection':
+                    return video.video_selection_date ? 
+                        `<div class="date-info">${new Date(video.video_selection_date).toLocaleDateString('zh-CN')}</div>` : 
+                        '<div class="date-info">-</div>';
+                case 'provide':
+                    return video.video_provide_date ? 
+                        `<div class="date-info">${new Date(video.video_provide_date).toLocaleDateString('zh-CN')}</div>` : 
+                        '<div class="date-info">-</div>';
+                case 'product':
+                    return `
+                        <div class="product-info">
+                            <a href="${video.product_url}" target="_blank" class="product-link">
+                                ${video.product_id}
+                            </a>
+                        </div>
+                    `;
+                case 'stage':
+                    return getStageIndicator(video);
+                case 'reviewer':
+                    return getReviewerSelect(video);
+                case 'annotation':
+                    return getAnnotationStatus(video);
+                case 'artwork_person':
+                    return getArtworkPersonSelect(video);
+                case 'ued':
+                    return getUedStatus(video);
+                case 'annotation_comment':
+                    return getAnnotationComment(video);
+                case 'annotation_screenshots':
+                    return getAnnotationScreenshots(video);
+                case 'ued_comment':
+                    return getUedComment(video);
+                case 'ued_screenshots':
+                    return getUedScreenshots(video);
+                case 'brand':
+                    return `<div class="brand-info">${video.brand_name}</div>`;
+                case 'category':
+                    return `<div class="category-info">${video.category_level1}/${video.category_level2}/${video.category_level3}</div>`;
+                case 'price':
+                    return `¥${video.material_price}`;
+                case 'selling_points':
+                    return getSellingPoints(video.material_selling_points);
+                case 'production_details':
+                    return getProductionDetails(video);
+                default:
+                    return '';
+            }
+        }
+
+        function getColumnWidth(columnId) {
+            const widthMap = {
+                'checkbox': '40px',
+                'material': '200px',
+                'original': '200px',
+                'artwork': '200px',
+                'selection': '140px',
+                'provide': '140px',
+                'product': '200px',
+                'stage': '180px',
+                'reviewer': '150px',
+                'annotation': '120px',
+                'artwork_person': '150px',
+                'ued': '120px',
+                'annotation_comment': '200px',
+                'annotation_screenshots': '150px',
+                'ued_comment': '200px',
+                'ued_screenshots': '150px',
+                'brand': '120px',
+                'category': '180px',
+                'price': '120px',
+                'selling_points': '200px',
+                'production_details': '100px'
+            };
+            return widthMap[columnId] || '150px';
+        }
+
+        // 获取阶段指示器
+        function getStageIndicator(video) {
+            const annotationStatus = video.annotation_status;
+            const uedStatus = video.ued_status;
+            const hasArtworkVideo = video.artwork_video_url && video.artwork_video_url !== '';
+            
+            let currentStage = '';
+            let stageIcon = '';
+            let stageClass = '';
+            
+            // 根据状态逻辑确定当前阶段
+            if (!annotationStatus || annotationStatus === '未审核') {
+                // 1. 标注验收状态为未审核
+                currentStage = '待标注审核';
+                stageIcon = 'fas fa-clock';
+                stageClass = 'stage-pending';
+            } else if (annotationStatus === '不可用') {
+                // 2. 标注验收状态为不可用
+                currentStage = '标注审核不通过';
+                stageIcon = 'fas fa-times-circle';
+                stageClass = 'stage-failed';
+            } else if (annotationStatus === '可用' && !hasArtworkVideo) {
+                // 3. 标注验收状态为可用，且加艺术字视频未上传
+                currentStage = '待加艺术字';
+                stageIcon = 'fas fa-paint-brush';
+                stageClass = 'stage-pending';
+            } else if (annotationStatus === '可用' && hasArtworkVideo && (!uedStatus || uedStatus === '未审核')) {
+                // 4. 标注验收状态为可用，且加艺术字视频已上传，UED未审核
+                currentStage = '待UED审核';
+                stageIcon = 'fas fa-search';
+                stageClass = 'stage-pending';
+            } else if (uedStatus === '可用') {
+                // 5. UED验收状态为可用
+                currentStage = 'UED审核通过';
+                stageIcon = 'fas fa-check-circle';
+                stageClass = 'stage-success';
+            } else if (uedStatus === '不可用') {
+                // 6. UED验收状态为不可用
+                currentStage = 'UED审核不通过';
+                stageIcon = 'fas fa-times-circle';
+                stageClass = 'stage-failed';
+            } else {
+                // 默认状态
+                currentStage = '待处理';
+                stageIcon = 'fas fa-question-circle';
+                stageClass = 'stage-default';
+            }
+            
+            return `
+                <div class="stage-indicator-simple ${stageClass}">
+                    <i class="${stageIcon}"></i>
+                    <span>${currentStage}</span>
+                </div>
+            `;
+        }
+
+        // 获取状态徽章
+        function getStatusBadge(status) {
+            const badgeClass = status === '已上传' ? 'bg-success' : 'bg-warning';
+            return `<span class="badge ${badgeClass} status-badge">${status}</span>`;
+        }
+
+        // 获取原始生产视频
+        function getOriginalVideo(video) {
+            const currentStage = video.current_stage;
+            const isHighlight = currentStage === 'annotation_review';
+            
+            return `
+                <div class="video-info ${isHighlight ? 'highlight-stage' : ''}">
+                    ${video.video_url ? `
+                        <button class="btn btn-sm btn-outline-primary" onclick="openReviewModal('${video.id}', 'original', '${video.video_url}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    ` : '<span class="text-muted">暂无</span>'}
+                </div>
+            `;
+        }
+
+        // 获取加艺术字视频
+        function getArtworkVideo(video) {
+            const currentStage = video.current_stage;
+            const isHighlight = currentStage === 'ued_review';
+            const annotationStatus = video.annotation_status;
+            
+            // 如果标注审核状态为"不可用"，则显示"--"
+            if (annotationStatus === '不可用') {
+                return `
+                    <div class="video-info">
+                        <span class="text-muted">--</span>
+                    </div>
+                `;
+            }
+            
+            // 如果标注审核状态为"未审核"或null，显示"--"（不显示上传按钮）
+            if (annotationStatus === '未审核' || !annotationStatus || annotationStatus === null) {
+                return `
+                    <div class="video-info">
+                        <span class="text-muted">--</span>
+                    </div>
+                `;
+            }
+            
+            // 如果标注审核状态为"可用"，显示眼睛图标或上传按钮
+            const artworkVideoUrl = video.artwork_video_url;
+            
+            return `
+                <div class="video-info ${isHighlight ? 'highlight-stage' : ''}">
+                    ${artworkVideoUrl ? `
+                        <button class="btn btn-sm btn-outline-primary" onclick="openReviewModal('${video.id}', 'artwork', '${artworkVideoUrl}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    ` : `
+                        <button class="btn btn-sm btn-outline-success" onclick="uploadArtworkVideo('${video.id}')">
+                            <i class="fas fa-upload"></i> 上传视频
+                        </button>
+                    `}
+                </div>
+            `;
+        }
+
+        // 获取审核员下拉框
+        function getReviewerSelect(video) {
+            const currentReviewer = video.annotation_reviewer || '';
+            
+            return `
+                <div class="reviewer-select">
+                    <select class="form-select form-select-sm" onchange="updateReviewer('${video.id}', this.value)">
+                        <option value="">未分配</option>
+                        <option value="王嘉欣" ${currentReviewer === '王嘉欣' ? 'selected' : ''}>王嘉欣</option>
+                        <option value="王量" ${currentReviewer === '王量' ? 'selected' : ''}>王量</option>
+                        <option value="豆玉欣" ${currentReviewer === '豆玉欣' ? 'selected' : ''}>豆玉欣</option>
+                    </select>
+                </div>
+            `;
+        }
+
+        // 获取加艺术字人员下拉框
+        function getArtworkPersonSelect(video) {
+            const currentArtworkPerson = video.artwork_person || '';
+            
+            return `
+                <div class="artwork-person-select">
+                    <select class="form-select form-select-sm" onchange="updateArtworkPerson('${video.id}', this.value)">
+                        <option value="">未分配</option>
+                        <option value="王嘉欣" ${currentArtworkPerson === '王嘉欣' ? 'selected' : ''}>王嘉欣</option>
+                        <option value="王量" ${currentArtworkPerson === '王量' ? 'selected' : ''}>王量</option>
+                        <option value="豆玉欣" ${currentArtworkPerson === '豆玉欣' ? 'selected' : ''}>豆玉欣</option>
+                    </select>
+                </div>
+            `;
+        }
+
+        // 获取标注审核意见
+        function getAnnotationComment(video) {
+            // 这里应该从数据库获取标注审核意见
+            // 暂时返回模拟数据
+            const comments = [
+                '视频质量良好，无明显问题',
+                '画面清晰度需要提升',
+                '音频质量较差，需要重新录制',
+                '视频内容符合要求',
+                '需要调整画面比例',
+                '色彩饱和度不足',
+                '视频长度合适',
+                '背景音乐音量过大',
+                '字幕显示正常',
+                '整体效果满意'
+            ];
+            
+            // 根据视频ID生成一致的评论
+            const index = video.id.charCodeAt(0) % comments.length;
+            return `<div class="comment-text" title="${comments[index]}">${comments[index]}</div>`;
+        }
+
+        // 获取标注审核截图
+        function getAnnotationScreenshots(video) {
+            // 从数据库获取真实的标注审核截图
+            if (video.annotation_screenshots && video.annotation_screenshots.length > 0) {
+                const screenshots = video.annotation_screenshots.map((screenshot, index) => {
+                    return `
+                        <div class="screenshot-thumbnail" onclick="showScreenshotModal('${screenshot.screenshot_path}', '标注审核截图 ${index + 1}')">
+                            <img src="${screenshot.screenshot_path}" 
+                                 alt="标注审核截图" class="thumbnail-img">
+                        </div>
+                    `;
+                });
+                
+                return `<div class="screenshots-container">${screenshots.join('')}</div>`;
+            } else {
+                const mockUrl = 'https://h2.appsimg.com/a.appsimg.com/upload/merchandise/pdcvis/653204/2024/1217/143/72691ebc-ece8-4215-a3d1-d19fae624d89.jpg';
+                return `
+                    <div class="screenshots-container">
+                        <div class="screenshot-thumbnail" onclick="showScreenshotModal('${mockUrl}', '标注审核截图 1')">
+                            <img src="${mockUrl}" alt="标注审核截图" class="thumbnail-img">
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // 获取UED审核意见
+        function getUedComment(video) {
+            // 这里应该从数据库获取UED审核意见
+            // 暂时返回模拟数据
+            const comments = [
+                'UED审核通过，视频质量良好',
+                '画面布局需要调整',
+                '色彩搭配需要优化',
+                '字体大小适中',
+                '整体视觉效果满意',
+                '需要调整视频比例',
+                '背景音乐音量合适',
+                '字幕显示清晰',
+                '动画效果流畅',
+                '符合品牌调性'
+            ];
+            
+            // 根据视频ID生成一致的评论
+            const index = video.id.charCodeAt(0) % comments.length;
+            return `<div class="comment-text" title="${comments[index]}">${comments[index]}</div>`;
+        }
+
+        // 获取UED审核截图
+        function getUedScreenshots(video) {
+            // 从数据库获取真实的UED审核截图
+            if (video.ued_screenshots && video.ued_screenshots.length > 0) {
+                const screenshots = video.ued_screenshots.map((screenshot, index) => {
+                    return `
+                        <div class="screenshot-thumbnail" onclick="showScreenshotModal('${screenshot.screenshot_path}', 'UED审核截图 ${index + 1}')">
+                            <img src="${screenshot.screenshot_path}" 
+                                 alt="UED审核截图" class="thumbnail-img">
+                        </div>
+                    `;
+                });
+                
+                return `<div class="screenshots-container">${screenshots.join('')}</div>`;
+            } else {
+                return '<div class="text-muted">无截图</div>';
+            }
+        }
+
+        // 获取生产详情
+        function getProductionDetails(video) {
+            return `
+                <button class="btn btn-sm btn-outline-info" onclick="showProductionDetails('${video.id}')">
+                    详情
+                </button>
+            `;
+        }
+
+        // 获取卖点信息（悬停显示）
+        function getSellingPoints(sellingPointsStr) {
+            if (!sellingPointsStr || sellingPointsStr === '[]') {
+                return '<div class="selling-points-hover">-</div>';
+            }
+            
+            try {
+                // 解析卖点字符串
+                const points = JSON.parse(sellingPointsStr);
+                if (!Array.isArray(points) || points.length === 0) {
+                    return '<div class="selling-points-hover">-</div>';
+                }
+                
+                // 构建悬停提示内容
+                let tooltipContent = '';
+                points.forEach((point, index) => {
+                    if (Array.isArray(point) && point.length >= 2) {
+                        tooltipContent += `${point[0]}: ${point[1]}\n`;
+                    }
+                });
+                
+                // 显示前2个卖点的简要信息
+                const displayPoints = points.slice(0, 2);
+                let displayText = '';
+                displayPoints.forEach((point, index) => {
+                    if (Array.isArray(point) && point.length >= 2) {
+                        displayText += `${point[0]}: ${point[1].substring(0, 10)}...`;
+                        if (index < displayPoints.length - 1) displayText += '; ';
+                    }
+                });
+                
+                if (points.length > 2) {
+                    displayText += ` +${points.length - 2}更多`;
+                }
+                
+                return `<div class="selling-points-hover" title="${tooltipContent.trim()}">${displayText}</div>`;
+                
+            } catch (e) {
+                // 如果解析失败，显示原始字符串的前30个字符
+                const truncated = sellingPointsStr.length > 30 ? 
+                    sellingPointsStr.substring(0, 30) + '...' : sellingPointsStr;
+                return `<div class="selling-points-hover" title="${sellingPointsStr}">${truncated}</div>`;
+            }
+        }
+
+        // 获取标注验收状态
+        function getAnnotationStatus(video) {
+            const currentStatus = video.annotation_status || '未审核';
+            
+            return `
+                <div class="status-select">
+                    <select class="form-select form-select-sm" onchange="updateAnnotationStatus('${video.id}', this.value)">
+                        <option value="未审核" ${currentStatus === '未审核' ? 'selected' : ''}>未审核</option>
+                        <option value="可用" ${currentStatus === '可用' ? 'selected' : ''}>可用</option>
+                        <option value="不可用" ${currentStatus === '不可用' ? 'selected' : ''}>不可用</option>
+                    </select>
+                </div>
+            `;
+        }
+
+        // 获取UED验收状态
+        function getUedStatus(video) {
+            const currentStatus = video.ued_status || '未审核';
+            
+            return `
+                <div class="status-select">
+                    <select class="form-select form-select-sm" onchange="updateUedStatus('${video.id}', this.value)">
+                        <option value="未审核" ${currentStatus === '未审核' ? 'selected' : ''}>未审核</option>
+                        <option value="可用" ${currentStatus === '可用' ? 'selected' : ''}>可用</option>
+                        <option value="不可用" ${currentStatus === '不可用' ? 'selected' : ''}>不可用</option>
+                    </select>
+                </div>
+            `;
+        }
+
+        // 更新标注验收状态
+        async function updateAnnotationStatus(videoId, newStatus) {
+            try {
+                const response = await fetch(`/api/toggle-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        videoId: videoId,
+                        type: 'annotation',
+                        status: newStatus
+                    })
+                });
+                
+                if (response.ok) {
+                    showAlert('标注验收状态已更新', 'success');
+                    loadVideos();
+                } else {
+                    const error = await response.json();
+                    showAlert('更新失败: ' + error.error, 'danger');
+                }
+            } catch (error) {
+                console.error('更新标注验收状态失败:', error);
+                showAlert('更新失败', 'danger');
+            }
+        }
+
+        // 更新UED验收状态
+        async function updateUedStatus(videoId, newStatus) {
+            try {
+                const response = await fetch(`/api/toggle-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        videoId: videoId,
+                        type: 'ued',
+                        status: newStatus
+                    })
+                });
+                
+                if (response.ok) {
+                    showAlert('UED验收状态已更新', 'success');
+                    loadVideos();
+                } else {
+                    const error = await response.json();
+                    showAlert('更新失败: ' + error.error, 'danger');
+                }
+            } catch (error) {
+                console.error('更新UED验收状态失败:', error);
+                showAlert('更新失败', 'danger');
+            }
+        }
+
+        // 更新审核员
+        async function updateReviewer(videoId, newReviewer) {
+            try {
+                const response = await fetch(`/api/update-reviewer`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        videoId: videoId,
+                        reviewer: newReviewer
+                    })
+                });
+                
+                if (response.ok) {
+                    showAlert('审核员已更新', 'success');
+                    loadVideos();
+                } else {
+                    const error = await response.json();
+                    showAlert('更新失败: ' + error.error, 'danger');
+                }
+            } catch (error) {
+                console.error('更新审核员失败:', error);
+                showAlert('更新失败', 'danger');
+            }
+        }
+
+        // 更新加艺术字人员
+        async function updateArtworkPerson(videoId, newPerson) {
+            try {
+                const response = await fetch(`/api/update-artwork-person`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        videoId: videoId,
+                        artworkPerson: newPerson
+                    })
+                });
+                
+                if (response.ok) {
+                    showAlert('加艺术字人员已更新', 'success');
+                    loadVideos();
+                } else {
+                    const error = await response.json();
+                    showAlert('更新失败: ' + error.error, 'danger');
+                }
+            } catch (error) {
+                console.error('更新加艺术字人员失败:', error);
+                showAlert('更新失败', 'danger');
+            }
+        }
+
+        // 显示批量分配模态框
+        function showBatchAssignModal() {
+            const selectedVideos = getSelectedVideos();
+            if (selectedVideos.length === 0) {
+                showAlert('请先选择要分配的视频', 'warning');
+                return;
+            }
+            
+            document.getElementById('selectedCount').textContent = selectedVideos.length;
+            const modal = new bootstrap.Modal(document.getElementById('batchAssignModal'));
+            modal.show();
+        }
+
+        // 获取选中的视频
+        function getSelectedVideos() {
+            const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]:checked');
+            const selectedVideos = [];
+            
+            checkboxes.forEach(checkbox => {
+                const row = checkbox.closest('tr');
+                const videoId = row.dataset.videoId;
+                if (videoId) {
+                    selectedVideos.push(videoId);
+                }
+            });
+            
+            return selectedVideos;
+        }
+
+        // 批量分配审核员
+        async function batchAssignReviewer() {
+            const selectedVideos = getSelectedVideos();
+            const reviewer = document.getElementById('batchReviewerSelect').value;
+            const artworkPerson = document.getElementById('batchArtworkSelect').value;
+            
+            if (!reviewer && !artworkPerson) {
+                showAlert('请至少选择一个审核员或加艺术字人员', 'warning');
+                return;
+            }
+            
+            try {
+                const promises = selectedVideos.map(async (videoId) => {
+                    const updatePromises = [];
+                    
+                    if (reviewer) {
+                        updatePromises.push(
+                            fetch(`/api/update-reviewer`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    videoId: videoId,
+                                    reviewer: reviewer
+                                })
+                            })
+                        );
+                    }
+                    
+                    if (artworkPerson) {
+                        updatePromises.push(
+                            fetch(`/api/update-artwork-person`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    videoId: videoId,
+                                    artworkPerson: artworkPerson
+                                })
+                            })
+                        );
+                    }
+                    
+                    return Promise.all(updatePromises);
+                });
+                
+                await Promise.all(promises);
+                
+                showAlert(`成功分配 ${selectedVideos.length} 个视频`, 'success');
+                
+                // 关闭模态框
+                const modal = bootstrap.Modal.getInstance(document.getElementById('batchAssignModal'));
+                modal.hide();
+                
+                // 清除选择
+                clearAllSelections();
+                
+                // 刷新列表
+                loadVideos();
+                
+            } catch (error) {
+                console.error('批量分配失败:', error);
+                showAlert('批量分配失败', 'danger');
+            }
+        }
+
+        // 清除所有选择
+        function clearAllSelections() {
+            const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            document.getElementById('selectAllCheckbox').checked = false;
+        }
+
+        // 全选/取消全选
+        function toggleSelectAll() {
+            const header = document.getElementById('selectAllCheckbox');
+            const checked = !!(header && header.checked);
+            const boxes = document.querySelectorAll('tbody input[type="checkbox"]');
+            boxes.forEach(b => { b.checked = checked; });
+            updateSelectAllState();
+        }
+
+        // 根据行勾选情况同步表头全选复选框状态
+        function updateSelectAllState() {
+            const header = document.getElementById('selectAllCheckbox');
+            if (!header) return;
+            const boxes = Array.from(document.querySelectorAll('tbody input[type="checkbox"]'));
+            if (boxes.length === 0) {
+                header.checked = false;
+                header.indeterminate = false;
+                return;
+            }
+            const checkedCount = boxes.filter(b => b.checked).length;
+            header.checked = checkedCount === boxes.length;
+            header.indeterminate = checkedCount > 0 && checkedCount < boxes.length;
+        }
+
+        // 上传加艺术字视频
+        function uploadArtworkVideo(videoId) {
+            // 打开上传模态框
+            document.getElementById('uploadVideoId').value = videoId;
+            document.getElementById('uploadModalTitle').textContent = '上传加艺术字视频';
+            
+            // 重置表单
+            document.getElementById('uploadForm').reset();
+            document.getElementById('videoPreviewContainer').style.display = 'none';
+            document.getElementById('uploadPreview').src = '';
+            
+            new bootstrap.Modal(document.getElementById('uploadModal')).show();
+        }
+
+        // 预览视频
+        function previewVideo(input) {
+            const file = input.files[0];
+            if (file) {
+                // 检查文件大小（100MB限制）
+                const maxSize = 100 * 1024 * 1024; // 100MB
+                if (file.size > maxSize) {
+                    showAlert('文件大小不能超过 100MB', 'warning');
+                    input.value = '';
+                    return;
+                }
+                
+                // 检查文件类型
+                const allowedTypes = ['video/mp4', 'video/avi', 'video/mov', 'video/quicktime', 'video/x-msvideo'];
+                if (!allowedTypes.includes(file.type)) {
+                    showAlert('请选择有效的视频文件（MP4、AVI、MOV）', 'warning');
+                    input.value = '';
+                    return;
+                }
+                
+                // 创建预览URL
+                const url = URL.createObjectURL(file);
+                const preview = document.getElementById('uploadPreview');
+                preview.src = url;
+                document.getElementById('videoPreviewContainer').style.display = 'block';
+            }
+        }
+
+        // 提交上传
+        async function submitUpload() {
+            const videoId = document.getElementById('uploadVideoId').value;
+            const fileInput = document.getElementById('videoFile');
+            
+            if (!fileInput.files[0]) {
+                showAlert('请选择要上传的视频文件', 'warning');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('videoId', videoId);
+            formData.append('videoFile', fileInput.files[0]);
+            
+            try {
+                showAlert('正在上传视频，请稍候...', 'info');
+                
+                const response = await fetch('/api/upload-artwork-video', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    showAlert('视频上传成功！', 'success');
+                    
+                    // 关闭模态框
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('uploadModal'));
+                    modal.hide();
+                    
+                    // 刷新列表
+                    loadVideos();
+                } else {
+                    const error = await response.json();
+                    showAlert('上传失败: ' + error.error, 'danger');
+                }
+            } catch (error) {
+                console.error('上传失败:', error);
+                showAlert('上传失败，请重试', 'danger');
+            }
+        }
+
+        // 打开审核模态框
+        function openReviewModal(videoId, videoType, videoUrl) {
+            // 设置视频源
+            const videoElement = document.getElementById('reviewVideo');
+            const sourceElement = document.getElementById('videoSource');
+            
+            // 设置crossOrigin属性以支持截图
+            videoElement.crossOrigin = 'anonymous';
+            sourceElement.src = videoUrl;
+            videoElement.load();
+            
+            // 设置模态框标题
+            const title = videoType === 'original' ? '原始视频审核' : '加艺术字视频审核';
+            document.getElementById('reviewModalTitle').textContent = title;
+            
+            // 获取视频信息
+            const video = currentVideos.find(v => v.id === videoId);
+            if (video) {
+                const videoInfo = `
+                    <div class="mb-2">
+                        <strong>品牌:</strong> ${video.brand_name}
+                    </div>
+                    <div class="mb-2">
+                        <strong>素材:</strong> ${video.material_name_vip}
+                    </div>
+                    <div class="mb-2">
+                        <strong>品类:</strong> ${video.category_level1} > ${video.category_level2}
+                    </div>
+                    <div class="mb-2">
+                        <strong>当前阶段:</strong> ${getStageName(video.current_stage)}
+                    </div>
+                `;
+                document.getElementById('reviewVideoInfo').innerHTML = videoInfo;
+                
+                // 根据审核阶段决定是否显示审核员信息
+                const reviewerSection = document.getElementById('reviewerSection');
+                if (videoType === 'original') {
+                    // 原始视频审核（标注审核阶段）显示审核员信息
+                    const currentReviewer = video.annotation_reviewer || '未分配';
+                    const reviewerDisplay = currentReviewer === '未分配' ? 
+                        `<span class="text-muted">${currentReviewer}</span>` : 
+                        `<span class="reviewer-display">${currentReviewer}</span>`;
+                    document.getElementById('currentReviewer').innerHTML = reviewerDisplay;
+                    reviewerSection.style.display = 'block';
+                } else {
+                    // 加艺术字视频审核（UED审核阶段）不显示审核员信息
+                    reviewerSection.style.display = 'none';
+                }
+            }
+            
+            // 存储当前审核的视频信息
+            window.currentReviewVideo = { id: videoId, type: videoType };
+            
+            // 显示模态框
+            const modal = new bootstrap.Modal(document.getElementById('reviewModal'));
+            modal.show();
+        }
+
+        // 获取阶段名称
+        function getStageName(stage) {
+            const stages = {
+                'production': '视频生产',
+                'annotation_review': '标注审核',
+                'ued_review': 'UED审核',
+                'artwork': '加艺术字',
+                'completed': '已完成'
+            };
+            return stages[stage] || stage;
+        }
+
+        // 截帧功能
+        function captureFrame() {
+            const video = document.getElementById('reviewVideo');
+            
+            // 检查视频是否加载完成
+            if (video.readyState < 2) {
+                showAlert('视频尚未加载完成，请稍后再试', 'warning');
+                return;
+            }
+            
+            try {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // 设置canvas尺寸与视频相同
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                
+                // 绘制当前帧到canvas
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                // 转换为图片数据
+                const imageData = canvas.toDataURL('image/png');
+                
+                // 创建截图ID
+                const screenshotId = 'screenshot_' + Date.now();
+                
+                // 添加截图到右侧
+                addScreenshot(screenshotId, imageData);
+                
+                showAlert('截图成功！', 'success');
+                
+            } catch (error) {
+                console.error('截图失败:', error);
+                
+                // 如果Canvas被污染，使用替代方案
+                if (error.name === 'SecurityError') {
+                    showAlert('由于安全限制无法截图，请使用本地视频文件测试', 'warning');
+                    
+                    // 创建一个占位截图
+                    const screenshotId = 'screenshot_' + Date.now();
+                    const placeholderImage = createPlaceholderScreenshot(video);
+                    addScreenshot(screenshotId, placeholderImage);
+                } else {
+                    showAlert('截图失败: ' + error.message, 'danger');
+                }
+            }
+        }
+        
+        // 创建占位截图
+        function createPlaceholderScreenshot(video) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // 设置canvas尺寸
+            canvas.width = 400;
+            canvas.height = 300;
+            
+            // 绘制背景
+            ctx.fillStyle = '#f0f0f0';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制边框
+            ctx.strokeStyle = '#ccc';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制文字
+            ctx.fillStyle = '#666';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('截图预览', canvas.width / 2, canvas.height / 2 - 10);
+            ctx.fillText('(跨域视频无法截图)', canvas.width / 2, canvas.height / 2 + 20);
+            ctx.fillText('时间: ' + formatTime(video.currentTime), canvas.width / 2, canvas.height / 2 + 50);
+            
+            return canvas.toDataURL('image/png');
+        }
+        
+        // 格式化时间
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // 添加截图到右侧
+        function addScreenshot(screenshotId, imageData) {
+            const screenshotsList = document.getElementById('screenshotsList');
+            const screenshotDiv = document.createElement('div');
+            screenshotDiv.className = 'screenshot-item mb-3';
+            screenshotDiv.id = screenshotId;
+            
+            screenshotDiv.innerHTML = `
+                <div class="screenshot-container">
+                    <img src="${imageData}" class="screenshot-image" style="width: 100%; max-width: 200px; border: 1px solid #ddd; border-radius: 4px;">
+                    <div class="mt-2">
+                        <button class="btn btn-sm btn-outline-danger" onclick="removeScreenshot('${screenshotId}')">
+                            <i class="fas fa-trash"></i> 删除
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            screenshotsList.appendChild(screenshotDiv);
+        }
+
+        // 删除截图
+        function removeScreenshot(screenshotId) {
+            const screenshotElement = document.getElementById(screenshotId);
+            if (screenshotElement) {
+                screenshotElement.remove();
+            }
+        }
+
+        // 提交审核
+        async function submitReview() {
+            if (!window.currentReviewVideo) {
+                showAlert('请先选择要审核的视频', 'warning');
+                return;
+            }
+            
+            const videoId = window.currentReviewVideo.id;
+            const videoType = window.currentReviewVideo.type;
+            const status = document.getElementById('reviewStatusSelect').value;
+            const description = document.getElementById('problemDescription').value;
+            
+            // 重新获取最新的视频数据以确保审核员信息是最新的
+            let reviewer = '未分配';
+            try {
+                const response = await fetch(`/api/projects`);
+                if (response.ok) {
+                    const videos = await response.json();
+                    const video = videos.find(v => v.id === videoId);
+                    if (video) {
+                        reviewer = video.annotation_reviewer || video.ued_reviewer || '未分配';
+                    }
+                }
+            } catch (error) {
+                console.error('获取最新视频数据失败:', error);
+                // 如果获取失败，使用当前缓存的数据
+                const video = currentVideos.find(v => v.id === videoId);
+                reviewer = video ? (video.annotation_reviewer || video.ued_reviewer || '未分配') : '未分配';
+            }
+            
+            // 收集截图信息（只收集图片，不收集意见）
+            const screenshots = [];
+            const screenshotItems = document.querySelectorAll('.screenshot-item');
+            screenshotItems.forEach((item, index) => {
+                const img = item.querySelector('.screenshot-image');
+                if (img && img.src) {
+                    screenshots.push({
+                        image: img.src,
+                        index: index + 1
+                    });
+                }
+            });
+            
+            if (!reviewer || reviewer === '未分配') {
+                showAlert('该任务尚未分配审核员，请先在任务列表中分配审核员', 'warning');
+                return;
+            }
+            
+            try {
+                // 先保存截图到数据库
+                const reviewType = videoType === 'original' ? 'annotation' : 'ued';
+                for (const screenshot of screenshots) {
+                    if (screenshot.image) {
+                        const formData = new FormData();
+                        formData.append('videoId', videoId);
+                        formData.append('reviewType', reviewType);
+                        formData.append('screenshotData', screenshot.image);
+                        
+                        const screenshotResponse = await fetch('/api/save-screenshot', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        if (!screenshotResponse.ok) {
+                            console.error('截图保存失败:', await screenshotResponse.text());
+                        }
+                    }
+                }
+                
+                // 然后提交审核结果
+                const response = await fetch(`/api/toggle-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        videoId: videoId,
+                        type: reviewType,
+                        status: status,
+                        reviewer: reviewer,
+                        comment: description
+                    })
+                });
+                
+                if (response.ok) {
+                    showAlert('审核结果已提交', 'success');
+                    
+                    // 关闭模态框
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
+                    modal.hide();
+                    
+                    // 刷新列表
+                    loadVideos();
+                } else {
+                    const error = await response.json();
+                    showAlert('提交失败: ' + error.error, 'danger');
+                }
+            } catch (error) {
+                console.error('提交审核失败:', error);
+                showAlert('提交失败', 'danger');
+            }
+        }
+
+        // 批量下载视频
+        async function batchDownloadVideos() {
+            const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]:checked');
+            
+            if (checkboxes.length === 0) {
+                showAlert('请先选择要下载的视频', 'warning');
+                return;
+            }
+            
+            const selectedVideoIds = Array.from(checkboxes).map(checkbox => {
+                const row = checkbox.closest('tr');
+                return row.querySelector('input[type="checkbox"]').dataset.videoId;
+            }).filter(id => id);
+            
+            if (selectedVideoIds.length === 0) {
+                showAlert('未找到有效的视频ID', 'warning');
+                return;
+            }
+            
+            try {
+                showAlert(`正在准备下载 ${selectedVideoIds.length} 个视频，请稍候...`, 'info');
+                
+                // 创建下载链接
+                const downloadUrls = selectedVideoIds.map(videoId => {
+                    const video = currentVideos.find(v => v.id === videoId);
+                    return video ? video.video_url : null;
+                }).filter(url => url);
+                
+                if (downloadUrls.length === 0) {
+                    showAlert('所选视频中没有有效的视频链接', 'warning');
+                    return;
+                }
+                
+                // 逐个下载视频
+                for (let i = 0; i < downloadUrls.length; i++) {
+                    const video = currentVideos.find(v => v.id === selectedVideoIds[i]);
+                    const materialName = video && video.material_name_vip ? video.material_name_vip : `video_${selectedVideoIds[i]}`;
+                    const safeName = sanitizeFilename(materialName);
+                    const ext = getExtensionFromUrl(downloadUrls[i]) || 'mp4';
+                    const link = document.createElement('a');
+                    link.href = downloadUrls[i];
+                    link.download = `${safeName}.${ext}`;
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // 添加延迟避免浏览器阻止多个下载
+                    if (i < downloadUrls.length - 1) {
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                    }
+                }
+                
+                showAlert(`已开始下载 ${downloadUrls.length} 个视频`, 'success');
+                
+            } catch (error) {
+                console.error('批量下载失败:', error);
+                showAlert('批量下载失败，请重试', 'danger');
+            }
+        }
+
+        // 批量上传艺术字
+        function batchUploadArtwork() {
+            const selectedVideos = getSelectedVideos();
+            if (selectedVideos.length === 0) {
+                showAlert('请先在列表中勾选要上传的素材', 'warning');
+                return;
+            }
+            const input = document.getElementById('batchArtworkFileInput');
+            input.value = '';
+            input.onchange = async () => {
+                const files = Array.from(input.files || []);
+                if (files.length === 0) return;
+                showAlert(`开始上传 ${files.length} 个文件，请稍候...`, 'info');
+
+                // 预构建选中素材映射：前缀匹配依据为素材名称（material_name_vip）
+                const selectedVideoObjs = selectedVideos
+                    .map(id => currentVideos.find(v => v.id === id))
+                    .filter(Boolean);
+
+                // 归一化函数
+                const normalize = (s) => (s || '')
+                    .toString()
+                    .trim()
+                    .replace(/\s+/g, '')
+                    .toLowerCase();
+
+                const results = { success: 0, failed: 0, unmatched: [] };
+
+                for (const file of files) {
+                    const nameNoExt = file.name.replace(/\.[^.]+$/, '');
+                    const normFile = normalize(nameNoExt);
+
+                    // 在选中素材中寻找前缀匹配：文件名前缀以素材名称为前缀
+                    let matched = null;
+                    for (const v of selectedVideoObjs) {
+                        const normMaterial = normalize(v.material_name_vip || '');
+                        if (normMaterial && (normFile.startsWith(normMaterial) || normMaterial.startsWith(normFile))) {
+                            matched = v;
+                            break;
+                        }
+                    }
+
+                    if (!matched) {
+                        results.unmatched.push(file.name);
+                        continue;
+                    }
+
+                    try {
+                        const formData = new FormData();
+                        formData.append('videoId', matched.id);
+                        formData.append('videoFile', file);
+
+                        const resp = await fetch('/api/upload-artwork-video', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        if (resp.ok) {
+                            results.success += 1;
+                        } else {
+                            results.failed += 1;
+                        }
+                    } catch (e) {
+                        results.failed += 1;
+                    }
+                }
+
+                let msg = `上传完成：成功 ${results.success}，失败 ${results.failed}`;
+                if (results.unmatched.length > 0) {
+                    msg += `；未匹配文件 ${results.unmatched.length} 个（例如：${results.unmatched.slice(0, 3).join(', ')}）`;
+                }
+                showAlert(msg, results.failed === 0 && results.unmatched.length === 0 ? 'success' : 'warning');
+                loadVideos();
+            };
+            input.click();
+        }
+
+        // 根据URL推断扩展名
+        function getExtensionFromUrl(url) {
+            try {
+                const u = new URL(url, window.location.origin);
+                const pathname = u.pathname || '';
+                const m = pathname.match(/\.([a-zA-Z0-9]+)$/);
+                return m ? m[1] : null;
+            } catch (e) {
+                const m = (url || '').match(/\.([a-zA-Z0-9]+)(?:\?|#|$)/);
+                return m ? m[1] : null;
+            }
+        }
+
+        // 安全文件名
+        function sanitizeFilename(name) {
+            return (name || '')
+                .toString()
+                .replace(/[\\\/:*?"<>|]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .slice(0, 120);
+        }
+
+        // 完成艺术字
+        async function completeArtwork(videoId) {
+            if (confirm('确认完成艺术字制作？')) {
+                try {
+                    const response = await fetch(`/api/workflow/${videoId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            currentStage: 'completed',
+                            completionStatus: '已上传'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        showAlert('艺术字制作完成', 'success');
+                        loadVideos();
+                        loadStatistics();
+                    } else {
+                        const error = await response.json();
+                        showAlert('操作失败: ' + error.error, 'danger');
+                    }
+                } catch (error) {
+                    console.error('完成艺术字失败:', error);
+                    showAlert('操作失败', 'danger');
+                }
+            }
+        }
+
+        // 查看视频详情
+        async function viewVideoDetail(videoId) {
+            try {
+                const response = await fetch(`/api/projects/${videoId}`);
+                const video = await response.json();
+                
+                const reviewsResponse = await fetch(`/api/projects/${videoId}/reviews`);
+                const reviews = await reviewsResponse.json();
+                
+                const content = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>基本信息</h6>
+                            <table class="table table-sm">
+                                <tr><td>品牌名称:</td><td>${video.brand_name}</td></tr>
+                                <tr><td>商品ID:</td><td>${video.product_id}</td></tr>
+                                <tr><td>品类:</td><td>${video.category_level1} > ${video.category_level2} > ${video.category_level3}</td></tr>
+                                <tr><td>素材命名:</td><td>${video.material_name_vip}</td></tr>
+                                <tr><td>素材售价:</td><td>¥${video.material_price}</td></tr>
+                                <tr><td>当前阶段:</td><td>${getStageName(video.current_stage)}</td></tr>
+                                <tr><td>完成状态:</td><td>${video.completion_status}</td></tr>
+                            </table>
+                            ${video.video_url ? `
+                                <div class="video-preview-container">
+                                    <h6>视频预览</h6>
+                                    <video controls style="width: 100%; max-width: 400px;">
+                                        <source src="${video.video_url}" type="video/mp4">
+                                        您的浏览器不支持视频播放。
+                                    </video>
+                                    <div class="mt-2">
+                                        <a href="${video.video_url}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-external-link-alt"></i> 在新窗口打开
+                                        </a>
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="col-md-6">
+                            <h6>审核记录</h6>
+                            ${reviews.length > 0 ? reviews.map(review => `
+                                <div class="card mb-2">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <span><strong>${review.review_type === 'annotation' ? '标注审核' : 'UED审核'}</strong></span>
+                                            <span class="badge ${review.review_status === '可用' ? 'bg-success' : 'bg-danger'}">${review.review_status}</span>
+                                        </div>
+                                        <div class="mt-2">
+                                            <small>审核员: ${review.reviewer_name}</small><br>
+                                            <small>时间: ${new Date(review.review_time).toLocaleString()}</small>
+                                        </div>
+                                        ${review.problem_description ? `<div class="mt-2"><strong>问题描述:</strong> ${review.problem_description}</div>` : ''}
+                                    </div>
+                                </div>
+                            `).join('') : '<p class="text-muted">暂无审核记录</p>'}
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('videoDetailContent').innerHTML = content;
+                new bootstrap.Modal(document.getElementById('videoDetailModal')).show();
+            } catch (error) {
+                console.error('查看视频详情失败:', error);
+                showAlert('查看视频详情失败', 'danger');
+            }
+        }
+
+        // 获取阶段名称
+        function getStageName(stage) {
+            const stageNames = {
+                'production': '视频生产',
+                'annotation_review': '标注审核',
+                'ued_review': 'UED审核',
+                'artwork': '加艺术字',
+                'completed': '已完成'
+            };
+            return stageNames[stage] || stage;
+        }
+
+        // 显示提示信息
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            // 3秒后自动消失
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.parentNode.removeChild(alertDiv);
+                }
+            }, 3000);
+        }
+
+        // 显示截图模态框
+        function showScreenshotModal(screenshotPath, title) {
+            document.getElementById('screenshotModalTitle').textContent = title;
+            
+            // 显示真实的截图
+            document.getElementById('screenshotImage').src = screenshotPath;
+            
+            const modal = new bootstrap.Modal(document.getElementById('screenshotModal'));
+            modal.show();
+        }
+
+        // 显示生产详情
+        function showProductionDetails(videoId) {
+            const video = currentVideos.find(v => v.id === videoId);
+            if (!video) {
+                showAlert('未找到视频信息', 'warning');
+                return;
+            }
+            
+            // 生成生产详情JSON数据
+            const productionData = {
+                "脚本内容": generateScriptContent(video),
+                "分段结果": generateSegmentationResult(video),
+                "卖点": video.material_selling_points || "暂无卖点信息",
+                "高亮字": generateHighlightText(video),
+                "音色": generateVoiceTone(video)
+            };
+            
+            // 格式化JSON显示
+            const formattedJson = JSON.stringify(productionData, null, 2);
+            document.getElementById('productionDetailsContent').textContent = formattedJson;
+            
+            const modal = new bootstrap.Modal(document.getElementById('productionDetailsModal'));
+            modal.show();
+        }
+
+        // 生成脚本内容
+        function generateScriptContent(video) {
+            const scripts = [
+                "产品介绍：展示商品的主要功能和特点",
+                "使用场景：演示产品在不同场景下的应用",
+                "效果对比：突出产品的优势和使用效果",
+                "品牌宣传：强调品牌价值和产品品质",
+                "用户评价：展示用户使用后的真实反馈"
+            ];
+            const index = video.id.charCodeAt(0) % scripts.length;
+            return scripts[index];
+        }
+
+        // 生成分段结果
+        function generateSegmentationResult(video) {
+            const segments = [
+                "开场介绍(0-5s) → 产品展示(5-15s) → 使用演示(15-25s) → 效果对比(25-35s) → 结尾总结(35-40s)",
+                "品牌展示(0-3s) → 功能演示(3-12s) → 场景应用(12-20s) → 用户反馈(20-28s) → 购买引导(28-30s)",
+                "问题引入(0-4s) → 产品解决(4-14s) → 详细说明(14-24s) → 效果展示(24-32s) → 行动号召(32-35s)",
+                "视觉冲击(0-2s) → 产品亮相(2-8s) → 核心功能(8-18s) → 使用场景(18-26s) → 品牌收尾(26-30s)",
+                "情感共鸣(0-5s) → 产品介绍(5-15s) → 功能展示(15-25s) → 效果验证(25-33s) → 购买提示(33-38s)"
+            ];
+            const index = video.id.charCodeAt(0) % segments.length;
+            return segments[index];
+        }
+
+        // 生成高亮字
+        function generateHighlightText(video) {
+            const highlights = [
+                "限时优惠", "品质保证", "热销推荐", "新品上市", "独家特供",
+                "专业品质", "用户首选", "口碑之选", "性价比高", "值得信赖"
+            ];
+            const index = video.id.charCodeAt(0) % highlights.length;
+            return highlights[index];
+        }
+
+        // 生成音色
+        function generateVoiceTone(video) {
+            const tones = [
+                "专业男声", "温柔女声", "活力青年", "成熟稳重", "亲切自然",
+                "权威专业", "轻松活泼", "优雅知性", "热情洋溢", "沉稳可靠"
+            ];
+            const index = video.id.charCodeAt(0) % tones.length;
+            return tones[index];
+        }
+
+        // 列设置功能
+        let columnSettings = {
+            available: [
+                { id: 'checkbox', name: '勾选框', required: true },
+                { id: 'material', name: '素材名称', required: true },
+                { id: 'original', name: '原始生产视频', required: true },
+                { id: 'artwork', name: '加艺术字视频', required: true },
+                { id: 'selection', name: '选品日期', required: false },
+                { id: 'provide', name: '提供日期', required: false },
+                { id: 'product', name: '商品信息', required: false },
+                { id: 'stage', name: '当前阶段', required: true },
+                { id: 'reviewer', name: '审核员', required: false },
+                { id: 'annotation', name: '标注验收', required: true },
+                { id: 'artwork_person', name: '加艺术字人员', required: false },
+                { id: 'ued', name: 'UED验收', required: true },
+                { id: 'annotation_comment', name: '标注审核意见', required: false },
+                { id: 'annotation_screenshots', name: '标注审核截图', required: false },
+                { id: 'ued_comment', name: 'UED审核意见', required: false },
+                { id: 'ued_screenshots', name: 'UED审核截图', required: false },
+                { id: 'brand', name: '品牌', required: false },
+                { id: 'category', name: '品类信息', required: false },
+                { id: 'price', name: '售价', required: false },
+                { id: 'selling_points', name: '卖点', required: false },
+                { id: 'production_details', name: '生产详情', required: false }
+            ],
+            selected: [
+                'checkbox', 'material', 'original', 'artwork', 'selection', 'provide',
+                'product', 'stage', 'reviewer', 'annotation', 'artwork_person', 'ued',
+                'annotation_comment', 'annotation_screenshots', 'ued_comment', 'ued_screenshots',
+                'brand', 'category', 'price', 'selling_points', 'production_details'
+            ]
+        };
+
+        function showColumnSettings() {
+            renderColumnSettings();
+            const modal = new bootstrap.Modal(document.getElementById('columnSettingsModal'));
+            modal.show();
+        }
+
+        function renderColumnSettings() {
+            const availableContainer = document.getElementById('availableColumns');
+            const selectedContainer = document.getElementById('selectedColumns');
+            
+            availableContainer.innerHTML = '';
+            selectedContainer.innerHTML = '';
+            
+            columnSettings.available.forEach(column => {
+                const isSelected = columnSettings.selected.includes(column.id);
+                const container = isSelected ? selectedContainer : availableContainer;
+                
+                const columnItem = document.createElement('div');
+                columnItem.className = `column-item ${isSelected ? 'selected' : ''}`;
+                columnItem.onclick = () => toggleColumn(column.id);
+                
+                columnItem.innerHTML = `
+                    <input type="checkbox" class="column-checkbox" ${isSelected ? 'checked' : ''} ${column.required ? 'disabled' : ''}>
+                    <span class="column-name">${column.name}</span>
+                    ${column.required ? '<small class="text-muted">(必需)</small>' : ''}
+                `;
+                
+                container.appendChild(columnItem);
+            });
+        }
+
+        function toggleColumn(columnId) {
+            const column = columnSettings.available.find(c => c.id === columnId);
+            if (column && column.required) return; // 必需列不能取消选择
+            
+            const index = columnSettings.selected.indexOf(columnId);
+            if (index > -1) {
+                columnSettings.selected.splice(index, 1);
+            } else {
+                columnSettings.selected.push(columnId);
+            }
+            
+            renderColumnSettings();
+        }
+
+        function selectAllColumns() {
+            columnSettings.selected = columnSettings.available.map(c => c.id);
+            renderColumnSettings();
+        }
+
+        function deselectAllColumns() {
+            columnSettings.selected = columnSettings.available.filter(c => c.required).map(c => c.id);
+            renderColumnSettings();
+        }
+
+        function resetToDefaultColumns() {
+            columnSettings.selected = [
+                'checkbox', 'material', 'original', 'artwork', 'selection', 'provide',
+                'product', 'stage', 'reviewer', 'annotation', 'artwork_person', 'ued',
+                'annotation_comment', 'annotation_screenshots', 'ued_comment', 'ued_screenshots',
+                'brand', 'category', 'price', 'selling_points', 'production_details'
+            ];
+            renderColumnSettings();
+        }
+
+        function applyColumnSettings() {
+            // 保存设置到localStorage
+            localStorage.setItem('columnSettings', JSON.stringify(columnSettings.selected));
+            
+            // 重新渲染表格
+            renderVideosTable();
+            
+            // 关闭模态框
+            const modal = bootstrap.Modal.getInstance(document.getElementById('columnSettingsModal'));
+            modal.hide();
+            
+            showAlert('列设置已应用', 'success');
+        }
+
+        function loadColumnSettings() {
+            const saved = localStorage.getItem('columnSettings');
+            if (saved) {
+                try {
+                    const savedColumns = JSON.parse(saved);
+                    // 确保必需列始终包含
+                    const requiredColumns = columnSettings.available.filter(c => c.required).map(c => c.id);
+                    const mergedColumns = [...new Set([...requiredColumns, ...savedColumns])];
+                    columnSettings.selected = mergedColumns;
+                    console.log('加载列设置:', columnSettings.selected);
+                } catch (e) {
+                    console.error('加载列设置失败:', e);
+                }
+            } else {
+                console.log('使用默认列设置:', columnSettings.selected);
+            }
+        }
+
+        // 预置审核意见插入
+        function addPresetComment(text) {
+            const textarea = document.getElementById('problemDescription');
+            if (!textarea) return;
+            const current = textarea.value.trim();
+            textarea.value = current ? (current + '；' + text) : text;
+            textarea.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+    </script>
 </body>
 </html>
-
